@@ -1,27 +1,29 @@
 ---
 name: pr-lifecycle
 description: >-
-  Creates feature/* or bugfix/* branches, opens GitHub pull requests with gh,
-  watches CI to completion, and fixes failures in a commit-push-retry loop.
-  Use when shipping work, opening a PR, pushing a feature branch, or when the
-  user asks to create a branch, open a PR, or get CI green.
+  Creates feature/* or bugfix/* branches, rebases onto the latest base branch,
+  opens GitHub pull requests with gh, watches CI to completion, and fixes
+  failures in a commit-push-retry loop. Use when shipping work, opening a PR,
+  pushing a feature branch, syncing with main, or when the user asks to create
+  a branch, open a PR, rebase, or get CI green.
 ---
 
 # PR Lifecycle
 
-End-to-end workflow: branch → push → PR → watch CI → fix failures → repeat until green.
+End-to-end workflow: branch → rebase onto base → push → PR → watch CI → fix failures → repeat until green.
 
-Use `gh` for all GitHub operations. Never update git config. Do not force-push unless the user explicitly asks.
+Use `gh` for all GitHub operations. Never update git config. Do not force-push unless the user explicitly asks, except `--force-with-lease` after a rebase (see step 2).
 
 ## Quick checklist
 
 ```
 - [ ] 1. Ensure on feature/* or bugfix/* branch
-- [ ] 2. Commit and push work
-- [ ] 3. Open PR if none exists
-- [ ] 4. Watch CI until pass or fail
-- [ ] 5. On fail: diagnose → fix → commit → push → return to 4
-- [ ] 6. Report PR URL and final CI status
+- [ ] 2. Rebase onto latest origin/<base>
+- [ ] 3. Commit and push work
+- [ ] 4. Open PR if none exists
+- [ ] 5. Watch CI until pass or fail
+- [ ] 6. On fail: diagnose → fix → rebase if behind → commit → push → return to 5
+- [ ] 7. Report PR URL and final CI status
 ```
 
 ## 1. Branch setup
@@ -35,7 +37,7 @@ git remote show origin | sed -n '/HEAD branch/s/.*: //p'   # usually main or mas
 
 **Already on `feature/*` or `bugfix/*`?** → continue to step 2.
 
-**Otherwise**, create a branch from the remote base:
+**Otherwise**, create a branch from the remote base (then rebase in step 2):
 
 ```bash
 git fetch origin
@@ -51,7 +53,37 @@ Naming rules:
 
 If uncommitted changes exist, commit or stash before switching branches.
 
-## 2. Commit and push
+## 2. Rebase onto base
+
+Keep the branch current with the remote base **before every push and before opening a PR**. Prefer rebase over merge.
+
+```bash
+git fetch origin
+git rebase origin/<base>
+```
+
+**Rebase succeeds, branch never pushed** → continue to step 3.
+
+**Rebase succeeds, branch already on remote** → push with lease:
+
+```bash
+git push --force-with-lease
+```
+
+**Conflicts during rebase:**
+
+1. Fix conflicted files
+2. `git add <resolved-files>`
+3. `git rebase --continue`
+4. Repeat until rebase completes
+
+If the conflict reflects incompatible intent (not a trivial overlap), run `git rebase --abort` and ask the user how to proceed.
+
+**Already up to date** (`git rebase origin/<base>` reports "Current branch … is up to date") → continue.
+
+Re-run this step after fixing CI failures when the branch may have fallen behind base.
+
+## 3. Commit and push
 
 Only commit when there are changes to ship. Follow the repo's commit message style (`git log -5 --oneline`).
 
@@ -65,10 +97,12 @@ git commit -m "$(cat <<'EOF'
 Optional body explaining why.
 EOF
 )"
-git push -u origin HEAD
+git push -u origin HEAD   # first push only; after a rebase use --force-with-lease
 ```
 
-## 3. Create PR if missing
+If step 2 already pushed via `--force-with-lease`, skip redundant push here unless new commits were added.
+
+## 4. Create PR if missing
 
 Check for an existing PR on this branch:
 
@@ -77,7 +111,7 @@ gh pr view --json number,url,state 2>/dev/null \
   || gh pr list --head "$(git branch --show-current)" --json number,url,state
 ```
 
-**PR exists** → note the number/URL and go to step 4.
+**PR exists** → note the number/URL and go to step 5.
 
 **No PR** → gather context, then create:
 
@@ -103,7 +137,7 @@ EOF
 
 Return the PR URL when done.
 
-## 4. Watch CI
+## 5. Watch CI
 
 Watch checks for the current branch's PR until they finish:
 
@@ -113,9 +147,9 @@ gh pr checks --watch
 
 Exit codes: `0` = all pass, `1` = at least one failed, `8` = still pending (without `--watch`).
 
-**All checks pass** → go to step 6.
+**All checks pass** → go to step 7.
 
-**Any check fails** → go to step 5.
+**Any check fails** → go to step 6.
 
 Alternative when you need run-level logs:
 
@@ -124,7 +158,7 @@ gh run list --branch "$(git branch --show-current)" --limit 5
 gh run watch <run-id>
 ```
 
-## 5. Fix failures and retry
+## 6. Fix failures and retry
 
 ### Diagnose
 
@@ -139,7 +173,7 @@ Read only failed check names and relevant log sections — not full JSON dumps.
 Classify the failure:
 - **Caused by this branch** → fix in code/tests
 - **Flaky or infra** → retry once (`gh run rerun <run-id>`); if still failing, report
-- **Unrelated / base branch broken** → merge or rebase latest base, then re-watch
+- **Unrelated / base branch moved ahead** → re-run step 2 (rebase onto `origin/<base>`), then re-watch
 - **Requires CI config change outside PR scope** → stop and report; do not weaken checks to pass
 
 ### Fix loop
@@ -158,11 +192,12 @@ EOF
 git push
 ```
 
-4. Return to **step 4** (`gh pr checks --watch`)
+4. Re-run **step 2** if the branch may be behind base
+5. Return to **step 5** (`gh pr checks --watch`)
 
 Repeat until all checks pass or you hit a blocker that needs user input.
 
-## 6. Done
+## 7. Done
 
 Report:
 - Branch name
@@ -178,7 +213,7 @@ If comments or merge conflicts remain, hand off to the `babysit` skill for merge
 - Never amend commits that were already pushed unless the user explicitly requests it
 - Do not change CI workflows or checks just to make failures pass
 - Do not push unrelated changes while fixing CI
-- Ask before force-push, branch deletion, or closing/reopening the PR
+- `--force-with-lease` after rebase is expected; ask before any other force-push, branch deletion, or closing/reopening the PR
 
 ## Reference commands
 
@@ -191,4 +226,5 @@ If comments or merge conflicts remain, hand off to the `babysit` skill for merge
 | Failed checks | `gh pr checks --fail-fast` |
 | Failed logs | `gh run view <id> --log-failed` |
 | Rerun workflow | `gh run rerun <id>` |
-| Update from base | `git fetch origin && git merge origin/<base>` |
+| Rebase onto base | `git fetch origin && git rebase origin/<base>` |
+| Push after rebase | `git push --force-with-lease` |
