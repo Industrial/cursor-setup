@@ -5,12 +5,18 @@ description: >-
   opens GitHub pull requests with gh, watches CI to completion, and fixes
   failures in a commit-push-retry loop. Use when shipping work, opening a PR,
   pushing a feature branch, syncing with main, or when the user asks to create
-  a branch, open a PR, rebase, or get CI green.
+  a branch, open a PR, or get CI green. For rebase-only tasks, prefer the `rebase` skill.
 ---
 
 # PR Lifecycle
 
 End-to-end workflow: branch → rebase onto base → push → PR → watch CI → fix failures → repeat until green.
+
+
+Related skills in `skills/git/`:
+- `writing-commit-messages` — conventional commit format and commitizen hooks
+- `rebase` — detailed rebase and conflict heuristics
+- `merge-conflicts` — file-by-file conflict resolution (zdiff3, rerere)
 
 Use `gh` for all GitHub operations. Never update git config. Do not force-push unless the user explicitly asks, except `--force-with-lease` after a rebase (see step 2).
 
@@ -70,14 +76,7 @@ git rebase origin/<base>
 git push --force-with-lease
 ```
 
-**Conflicts during rebase:**
-
-1. Fix conflicted files
-2. `git add <resolved-files>`
-3. `git rebase --continue`
-4. Repeat until rebase completes
-
-If the conflict reflects incompatible intent (not a trivial overlap), run `git rebase --abort` and ask the user how to proceed.
+**Conflicts during rebase:** → follow the `merge-conflicts` skill (or `rebase` skill for heuristics).
 
 **Already up to date** (`git rebase origin/<base>` reports "Current branch … is up to date") → continue.
 
@@ -85,7 +84,7 @@ Re-run this step after fixing CI failures when the branch may have fallen behind
 
 ## 3. Commit and push
 
-Only commit when there are changes to ship. Follow the repo's commit message style (`git log -5 --oneline`).
+Only commit when there are changes to ship. Follow `writing-commit-messages` and the repo's style (`git log -5 --oneline`).
 
 ```bash
 git status
