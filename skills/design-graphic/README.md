@@ -1,6 +1,6 @@
-# Design skills for Cursor
+# Graphic / UI design skills for Cursor
 
-Curated, high-install design and UI/UX agent skills installed under `.cursor/skills/design/`. Sourced from the most-used upstream collections (May 2026): Anthropic official skills, Impeccable, ibelick/ui-skills, and spencerpauly/awesome-cursor-skills.
+Curated, high-install design and UI/UX agent skills installed under `.cursor/skills/design-graphic/`. Sourced from the most-used upstream collections (May 2026): Anthropic official skills, Impeccable, ibelick/ui-skills, and spencerpauly/awesome-cursor-skills.
 
 **15 skills** — generation, tokens, brand, visual QA, accessibility, and motion.
 
@@ -53,7 +53,7 @@ License: see each skill's `LICENSE.txt` where present (Apache 2.0 for open skill
 |-------|-------|
 | `impeccable` | Brand vs product registers, 23+ commands, anti-pattern detector, live browser iteration |
 
-License: Apache 2.0 (`impeccable/LICENSE`). Paths patched for `.cursor/skills/design/impeccable/`.
+License: Apache 2.0 (`impeccable/LICENSE`). Paths patched for `.cursor/skills/design-graphic/impeccable/`.
 
 ### UI Skills ([ibelick/ui-skills](https://github.com/ibelick/ui-skills))
 
@@ -77,7 +77,7 @@ License: Apache 2.0 (`impeccable/LICENSE`). Paths patched for `.cursor/skills/de
 ## Updating
 
 ```bash
-DEST=".cursor/skills/design"
+DEST=".cursor/skills/design-graphic"
 TMP=$(mktemp -d)
 
 # Anthropic design skills
@@ -93,7 +93,7 @@ git clone --depth 1 --filter=blob:none --sparse https://github.com/pbakaus/impec
 cd "$TMP/impeccable" && git sparse-checkout set .cursor/skills/impeccable
 rm -rf "$DEST/impeccable" && cp -a .cursor/skills/impeccable "$DEST/impeccable"
 find "$DEST/impeccable" -type f \( -name "*.md" -o -name "*.mjs" -o -name "*.json" \) -print0 \
-  | xargs -0 sed -i 's|.cursor/skills/impeccable|.cursor/skills/design/impeccable|g'
+  | xargs -0 sed -i 's|.cursor/skills/impeccable|.cursor/skills/design-graphic/impeccable|g'
 
 # ibelick/ui-skills
 git clone --depth 1 --filter=blob:none --sparse https://github.com/ibelick/ui-skills.git "$TMP/ui-skills"
