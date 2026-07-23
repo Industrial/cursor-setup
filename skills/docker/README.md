@@ -9,6 +9,7 @@ Curated, production-oriented Docker agent skills installed under `.cursor/skills
 | Task | Skill |
 |------|-------|
 | idclear local dev vs VPS prod compose modes | `idclear-docker-compose-modes` |
+| Deploy to testing VPS (testing.idclear.com) | `idclear-vps-testing-deploy` |
 | Dockerize a new app (Cursor workflow) | `adding-docker` |
 | Practical Dockerfile / compose / debug | `docker-helper` |
 | Production patterns + deep reference | `containers-orchestration` |
