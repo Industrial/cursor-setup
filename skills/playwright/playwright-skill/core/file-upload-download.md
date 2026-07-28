@@ -230,7 +230,7 @@ test('uploads multiple files at once', async ({ page }) => {
 
 ## Recipe 3: Drag-and-Drop File Upload
 
-> **Playwright 1.60+**: `locator.drop({ files })` simulates a real external file drop (native `dragenter`/`dragover`/`drop` with synthetic `DataTransfer`). Use it for zones that listen for `drop` events and have no usable `input[type=file]`. On Playwright < 1.60, target the underlying file input with `setInputFiles` (shown after).
+> **Playwright 1.60+**: `locator.drop({ files })` simulates a real external file drop (native `dragenter`/`dragover`/`drop` with projected `DataTransfer`). Use it for zones that listen for `drop` events and have no usable `input[type=file]`. On Playwright < 1.60, target the underlying file input with `setInputFiles` (shown after).
 
 ### Complete Example
 

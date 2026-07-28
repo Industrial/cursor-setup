@@ -29,7 +29,7 @@ Developed by John Boyd (military strategist). Not a one-pass checklist — a **c
 | Phase | Purpose | Agent focus |
 |-------|---------|-------------|
 | **Observe** | Raw signal from environment | Metrics, logs, user feedback, diffs — unfiltered |
-| **Orient** | Synthesize into updated model | **Most important phase** — filter, contextualize, challenge prior beliefs |
+| **Orient** | Project into updated model | **Most important phase** — filter, contextualize, challenge prior beliefs |
 | **Decide** | Select action among options | Commit; avoid infinite analysis |
 | **Act** | Execute; generate new observations | Smallest action that produces learning |
 
@@ -54,7 +54,7 @@ Boyd emphasized **Orient** — culture, experience, and bias shape what we see. 
 - Results of previous Act
 - **Explicitly note** what you are NOT observing (blind spots)
 
-### Orient — how to synthesize
+### Orient — how to project
 
 1. What changed since last cycle?
 2. Which prior hypothesis is confirmed/refuted?
@@ -125,7 +125,7 @@ Timebox: 2h
 ## Common Mistakes
 
 - Treating OODA as linear (one pass and done)
-- Skipping Orient (react to every signal without synthesis)
+- Skipping Orient (react to every signal without projection)
 - Act too large (cannot attribute learning)
 - Observe without instrumentation (no feedback for next cycle)
 - Slow Decide in Chaotic situations

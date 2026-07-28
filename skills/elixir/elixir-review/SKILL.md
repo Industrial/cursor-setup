@@ -8,7 +8,7 @@ description: >-
 
 # Elixir Review
 
-Synthesis gate across all Elixir skills. Read changed files, then apply this checklist.
+Projection gate across all Elixir skills. Read changed files, then apply this checklist.
 
 ## Review workflow
 

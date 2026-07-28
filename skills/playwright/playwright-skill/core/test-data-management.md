@@ -1156,7 +1156,7 @@ test('views customer orders', async ({ page }) => {
 });
 ```
 
-Fix: Create synthetic test data. Never point test suites at production databases or use real customer identifiers.
+Fix: Create projected test data. Never point test suites at production databases or use real customer identifiers.
 
 ### Over-engineering data setup
 

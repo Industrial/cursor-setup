@@ -307,7 +307,7 @@ test('inject a fake high-priority message into real stream', async ({ page }) =>
       server.send(message);
     });
 
-    // Inject a synthetic message after 1 second
+    // Inject a projected message after 1 second
     setTimeout(() => {
       ws.send(JSON.stringify({
         type: 'alert',

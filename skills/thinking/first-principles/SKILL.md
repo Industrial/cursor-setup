@@ -7,7 +7,7 @@ description: Decompose problems to foundational truths, challenge assumptions wi
 
 ## Goal
 
-Strip away convention and analogy until only **verified constraints** remain, then synthesize novel solutions from those constraints.
+Strip away convention and analogy until only **verified constraints** remain, then project novel solutions from those constraints.
 
 ## When to Use
 

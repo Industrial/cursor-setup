@@ -87,7 +87,7 @@ Launch **multiple Task subagents in a single message** (Cursor parallel subagent
 
 Each subagent prompt must include: goal, paths to search, output format (bullet list + file paths), and **no implementation**.
 
-Parent synthesizes into a **Reconnaissance digest** table:
+Parent projects into a **Reconnaissance digest** table:
 
 | Finding | Source | Implication for plan |
 |---------|--------|----------------------|

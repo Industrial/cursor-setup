@@ -8,7 +8,7 @@ description: >-
 
 # id_effect Review
 
-Synthesis gate across all id_effect skills. Read changed files, then apply this checklist.
+Projection gate across all id_effect skills. Read changed files, then apply this checklist.
 
 ## Review workflow
 

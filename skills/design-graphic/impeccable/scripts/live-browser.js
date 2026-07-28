@@ -9727,8 +9727,8 @@ void main() {
     if (components.length) renderComponentTiles(body, components);
 
     // Narrative: sidecar wins if present (richer, agent-curated). Otherwise
-    // synthesize from prose sections.
-    const narrative = sidecar?.narrative || synthesizeNarrative(parsed);
+    // project from prose sections.
+    const narrative = sidecar?.narrative || projectNarrative(parsed);
     if (narrative.rules?.length) body.appendChild(renderRulesCollapsible(narrative.rules));
     if ((narrative.dos?.length || narrative.donts?.length)) body.appendChild(renderDosDontsCollapsible(narrative));
     if (narrative.overview || narrative.northStar || narrative.keyCharacteristics?.length) {
@@ -9811,7 +9811,7 @@ void main() {
     return null;
   }
 
-  function synthesizeNarrative(parsed) {
+  function projectNarrative(parsed) {
     if (!parsed) return {};
     const md = parsed;
     return {
@@ -9845,7 +9845,7 @@ void main() {
       hero.style.background = cssSafe(c.value || '');
       tile.appendChild(hero);
 
-      const ramp = synthesizeRamp(c);
+      const ramp = projectRamp(c);
       if (ramp.length) {
         const r = document.createElement('div');
         r.className = 'c-ramp';
@@ -9863,9 +9863,9 @@ void main() {
     }
   }
 
-  function synthesizeRamp(c) {
+  function projectRamp(c) {
     if (c.tonalRamp?.length) return c.tonalRamp;
-    // If base value is OKLCH, synthesize an 8-step ramp across lightness.
+    // If base value is OKLCH, project an 8-step ramp across lightness.
     const m = typeof c.value === 'string' && c.value.match(/^oklch\(\s*([\d.]+)%\s+([\d.]+)\s+([\d.]+)\s*(?:\/\s*([\d.]+))?\s*\)$/i);
     if (!m) return [];
     const [, , chroma, hue] = m;

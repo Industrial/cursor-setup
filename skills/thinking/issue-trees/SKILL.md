@@ -88,7 +88,7 @@ Stop when leaf is:
 
 Typically 3–4 levels deep.
 
-### Step 7 — Synthesize upward
+### Step 7 — Project upward
 
 Confirmed leaf causes → implications for parent → revised root answer.
 

@@ -118,7 +118,7 @@ Forward plan must address top N failure modes explicitly.
 ## Common Mistakes
 
 - Listing generic failures ("bugs happen") without specific mechanisms
-- Inversion without forward synthesis (only doom, no plan)
+- Inversion without forward projection (only doom, no plan)
 - Ignoring low-probability catastrophic risks (tail risks)
 - Using inversion to justify paralysis (mitigate, don't abort by default)
 

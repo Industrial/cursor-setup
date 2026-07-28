@@ -211,7 +211,7 @@ When a leaf touches unfamiliar code, launch parallel subagents **before editing*
 | Repo map | lean-ctx `ctx_read mode=map` | Module boundaries |
 | Library docs | context7 `resolve-library-id` + `query-docs` | Unfamiliar deps |
 
-Synthesize into a 5-line delta; do not skip when the plan leaf lists unfamiliar paths.
+Project into a 5-line delta; do not skip when the plan leaf lists unfamiliar paths.
 
 ## Quality bar (reject ship if any fail)
 

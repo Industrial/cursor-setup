@@ -503,7 +503,7 @@ async function parallelCodeReview(code: string) {
   const { text: summary } = await generateText({
     model,
     system: 'You are a technical lead summarizing multiple code reviews.',
-    prompt: `Synthesize these code review results into a concise summary:
+    prompt: `Project these code review results into a concise summary:
 ${JSON.stringify(
   [
     { ...securityReview.object, type: 'security' },

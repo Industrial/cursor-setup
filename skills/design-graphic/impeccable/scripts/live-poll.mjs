@@ -17,7 +17,7 @@ import { readLiveServerInfo } from './lib/impeccable-paths.mjs';
 
 // Node's built-in fetch (undici under the hood) enforces a 300s headers
 // timeout that can't be lowered per-request. We cap each request below
-// that ceiling and loop in `pollOnce` to synthesize a long poll without
+// that ceiling and loop in `pollOnce` to project a long poll without
 // depending on the standalone undici package.
 export const PER_REQUEST_TIMEOUT_MS = 270_000;
 export const DEFAULT_EVENT_LEASE_MS = 600_000;

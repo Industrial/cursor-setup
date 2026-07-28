@@ -276,7 +276,7 @@ test('critical assets are cached by the service worker', async ({ swContext }) =
 **Use when**: You need to test the "Add to Home Screen" / PWA install flow.
 **Avoid when**: Your app is not a PWA or does not handle the `beforeinstallprompt` event.
 
-The `beforeinstallprompt` event cannot be synthetically triggered by Playwright. Instead, verify that your app captures and handles the event correctly.
+The `beforeinstallprompt` event cannot be projectedally triggered by Playwright. Instead, verify that your app captures and handles the event correctly.
 
 **TypeScript**
 ```typescript

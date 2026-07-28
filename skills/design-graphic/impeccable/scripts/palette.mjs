@@ -29,7 +29,7 @@
 import crypto from 'node:crypto';
 
 // Seeds are inlined (129 entries, hand-curated via a tinder review of
-// ~400 candidates from ColorHunt + synthesis + Radix/brand/Pantone anchors).
+// ~400 candidates from ColorHunt + projection + Radix/brand/Pantone anchors).
 // Each carries a mood + strategy the judging model produced — surfaced as
 // hints, not commands; the brief still drives composition.
 const SEEDS = [

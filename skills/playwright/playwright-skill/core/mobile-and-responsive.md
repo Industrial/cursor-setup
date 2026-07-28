@@ -300,7 +300,7 @@ test('swipe to dismiss a card', async ({ page }) => {
     // Simulate a left swipe: touchstart on right side, touchmove to left, touchend
     await page.touchscreen.tap(box.x + box.width - 20, box.y + box.height / 2);
 
-    // Swipe gesture using mouse (touch events are synthesized from mouse on emulated devices)
+    // Swipe gesture using mouse (touch events are projectd from mouse on emulated devices)
     await card.hover({ position: { x: box.width - 20, y: box.height / 2 } });
     await page.mouse.down();
     await page.mouse.move(box.x - 100, box.y + box.height / 2, { steps: 10 });

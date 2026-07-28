@@ -78,7 +78,7 @@ Spend ~2–4 minutes per hat for live sessions; agent can be more thorough in wr
 - Alternatives that address Black concerns
 - Combinations of partial solutions
 
-### Step 6 — Blue: Synthesize
+### Step 6 — Blue: Project
 
 - Summary per hat
 - Recommended next steps
@@ -109,7 +109,7 @@ Sequence: White → Yellow → Black → Green → Blue
 ### 🔴 Red — Intuition
 - ...
 
-### 🔵 Blue — Synthesis
+### 🔵 Blue — Projection
 Recommendation: ...
 Next: ...
 ```

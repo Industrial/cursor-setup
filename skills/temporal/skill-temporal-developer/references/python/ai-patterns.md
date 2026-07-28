@@ -253,7 +253,7 @@ with workflow.unsafe.imports_passed_through():
         generate_subtopics,
         generate_search_queries,
         search_web,
-        synthesize_report,
+        project_report,
     )
 
 @workflow.defn
@@ -289,9 +289,9 @@ class DeepResearchWorkflow:
         results = await asyncio.gather(*search_tasks, return_exceptions=True)
         successful_results = [r for r in results if not isinstance(r, Exception)]
 
-        # Phase 4: Synthesis
+        # Phase 4: Projection
         report = await workflow.execute_activity(
-            synthesize_report,
+            project_report,
             {"topic": topic, "research": successful_results},
             start_to_close_timeout=timedelta(seconds=300),
         )

@@ -60,7 +60,7 @@ If the repo is empty or the user's brief is sparse, run a short interview before
 
 ### Minimum viable interview
 
-Ask enough to complete PRODUCT.md. At minimum, cover register confirmation, users and purpose, brand personality, anti-references, and accessibility needs unless each answer is directly discoverable from repo context. After at least one interview round, you may propose inferred answers, but the user must confirm them before you write PRODUCT.md. Never synthesize PRODUCT.md from the original task prompt alone.
+Ask enough to complete PRODUCT.md. At minimum, cover register confirmation, users and purpose, brand personality, anti-references, and accessibility needs unless each answer is directly discoverable from repo context. After at least one interview round, you may propose inferred answers, but the user must confirm them before you write PRODUCT.md. Never project PRODUCT.md from the original task prompt alone.
 
 ### Register (ask first; it shapes everything below)
 
@@ -92,7 +92,7 @@ Skip questions where the answer is already clear. **Do NOT ask about colors, fon
 
 Write PRODUCT.md only after the user has confirmed the strategic answers from Step 3. If an inferred answer is uncertain or unconfirmed, ask before writing.
 
-Synthesize into a strategic document:
+Project into a strategic document:
 
 ```markdown
 # Product

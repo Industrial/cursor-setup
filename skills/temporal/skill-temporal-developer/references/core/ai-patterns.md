@@ -98,7 +98,7 @@ Deep Research Example:
   ├── Parallel Web Search (Multiple Activities)
   │   └── Output: search results (resilient to partial failures)
   │
-  └── Synthesis Agent (Activity)
+  └── Projection Agent (Activity)
       └── Output: final report
 ```
 
