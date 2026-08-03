@@ -207,7 +207,7 @@ When a leaf touches unfamiliar code, launch parallel subagents **before editing*
 | Track | Tool | Deliverable |
 |-------|------|-------------|
 | Blast radius | roam `preflight` / `impact` | Symbols and files at risk |
-| API surface | serena `find_symbol` | Existing patterns to follow |
+| API surface | roam `context` / lean-ctx `ctx_search` | Existing patterns to follow |
 | Repo map | lean-ctx `ctx_read mode=map` | Module boundaries |
 | Library docs | context7 `resolve-library-id` + `query-docs` | Unfamiliar deps |
 

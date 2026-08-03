@@ -25,7 +25,6 @@ Also use MCP servers in parallel during reconnaissance:
 |--------|---------------------|
 | **lean-ctx** | `ctx_read`, `ctx_search`, `ctx_tree`, `ctx_shell` — token-efficient repo reads |
 | **roam-code** | `roam preflight`, `roam impact`, `roam context` — blast radius before leaves |
-| **serena** | `find_symbol`, `find_referencing_symbols` — API surface verification |
 | **context7** | Library/framework docs for unfamiliar deps (`resolve-library-id` + `query-docs`) |
 | **searxng** | External research when Context7 has no match |
 
@@ -487,7 +486,7 @@ Reject your draft if any fail:
 - [ ] Leaf slugs match Maestro task slugs; heavy mode has execution overlay + wave table
 - [ ] All 26 Maestro MCP tools considered; each applicable tool invoked or explicitly N/A
 - [ ] `maestro plan check` run when task exists
-- [ ] Paths verified against repo (roam/serena/lean-ctx — not guessed)
+- [ ] Paths verified against repo (roam/lean-ctx — not guessed)
 - [ ] Parallel waves map to **single-message multi-Task** dispatch
 - [ ] Dependencies acyclic; wave order executable
 - [ ] Mid-level engineer could implement any leaf without clarifying questions
