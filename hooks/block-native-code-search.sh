@@ -12,7 +12,7 @@ case "$tool_name" in
 {
   "permission": "deny",
   "user_message": "Native SemanticSearch is disabled. Use roam-code or lean-ctx MCP for code exploration.",
-  "agent_message": "Prefer CallMcpTool with server roam-code (or project-0-test-haskell-web-roam-code): roam_explore (broad exploration), roam_understand (deep dive), roam_search_symbol (symbol lookup), roam_context (file/module context), roam_trace (call paths), roam_uses (references). For token-compressed semantic search use lean-ctx ctx_semantic_search. Read tool schemas first. Never retry native SemanticSearch."
+  "agent_message": "STOP. Do not retry native SemanticSearch. Prefer CallMcpTool with server project-0-solana-yield-optimizer-roam-code (or roam-code): roam_explore, roam_understand, roam_search_symbol, roam_context, roam_trace, roam_uses. For token-compressed semantic search use lean-ctx ctx_semantic_search. GetMcpTools once for schema, then explore."
 }
 EOF
         exit 0
