@@ -1,5 +1,7 @@
 Produce a **Maestro-native hierarchical implementation plan** of the highest possible quality before writing or changing any code. Planning is the primary deliverable; implementation comes only after the plan is materialized in Maestro, validated, and the user approves (unless they explicitly asked for plan + implementation in one pass).
 
+**ID Workflow:** When invoked via `/id` or `/id-plan`, obey `.cursor/commands/id-workflow/PROTOCOL.md` (mode declaration, write bans, lane). This command is the PLAN-mode body.
+
 **MCP-first rule:** Prefer **Maestro MCP** (`project-0-solana-yield-optimizer-maestro`) for all mission/task/evidence/verdict/handoff/contract operations. Fall back to `devenv shell -- maestro …` CLI only when no MCP tool exists (noted below). Read each tool's schema under `mcps/project-0-solana-yield-optimizer-maestro/tools/` before calling — the schema is strict; unknown fields fail.
 
 ---
@@ -518,3 +520,4 @@ Reject your draft if any fail:
 | `/quality` | Re-read request + this command; sharpen AC, scope, diagrams, gates; re-run plan-check |
 | `/scientific-method` | For optimization/trade-off leaves: observations, ranked hypotheses, falsification-first experiments in the plan |
 | `/scrutinize` | Outsider review of the plan before presenting |
+| `/id` / `/id-plan` | Prefer ID Workflow PLAN mode; this file remains the PLAN body |
