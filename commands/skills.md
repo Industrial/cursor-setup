@@ -1,1 +1,1 @@
-Look at all skills in .cursor/skills and pick (multiple) the right ones for the task at hand. List all skills you reviewed and will use before continueing.
+Scan `.cursor/skills/`. Select every skill that materially improves this task; skip the rest. Before acting: list **reviewed** vs **using** (paths only). Load and follow each selected skill. Prefer fewer, higher-leverage skills over a long weak list.
