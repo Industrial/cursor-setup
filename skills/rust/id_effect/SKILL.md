@@ -18,7 +18,9 @@ Quick reference for **id_effect 3.0**. For depth, read the specialized skill for
 | DI, providers, `caps!` | [id_effect-capabilities](id_effect-capabilities/SKILL.md) |
 | Exit, Cause, recovery | [id_effect-errors](id_effect-errors/SKILL.md) |
 | Fibers, scopes, Schedule | [id_effect-concurrency](id_effect-concurrency/SKILL.md) |
-| Stream, Sink, Parallelism | [id_effect-streams](id_effect-streams/SKILL.md) |
+| Compute Fabric, `ResourcePolicy`, implicit parallelism | [id_effect-compute-fabric](id_effect-compute-fabric/SKILL.md) |
+| STM, `TRef`, transactional collections | [id_effect-stm](id_effect-stm/SKILL.md) |
+| Stream, Sink, bulk transforms | [id_effect-streams](id_effect-streams/SKILL.md) |
 | Schema / Unknown parsing | [id_effect-schema](id_effect-schema/SKILL.md) |
 | Optics (Lens, Prism) | [id_effect-optics](id_effect-optics/SKILL.md) |
 | Parser combinators / Codec | [id_effect-parse](id_effect-parse/SKILL.md) |
@@ -60,12 +62,13 @@ Quick reference for **id_effect 3.0**. For depth, read the specialized skill for
 - `require!(env, Key)`, config `ambient`
 - Service `IntoBind` (`~ServiceKey`) for DI — use `~Key`
 
-## Parallelism (Rayon default)
+## Parallelism (Compute Fabric — 0.4.0+)
 
-- **`Parallelism::Auto { threshold: 1024 }`** — default for bulk collection/stream chunk ops
-- **`effect!` stays sequential** — use `fiber_all` or `Stream::map_par_n` for concurrency
-- Escape: `*_serial` for `FnMut` / non-`Send`; `*_with(Parallelism::…, …)` for explicit policy
-- ADR: `docs/adrs/0006-parallel-by-default.md`
+- **No public `Parallelism` type** — Fabric decides via `ResourcePolicy` + supervisor (ADR 0007/0008)
+- **`run()` / `run_with()`** install default Fabric; `run_blocking_serial` for deterministic tests
+- Bulk: `map` / `filter` / … with `*_serial` escape; effectful streams: `Stream::map_effect`
+- **`effect!`**: EDG may parallelize independent `~` binds; opt out with `#[effect(serial)]`
+- Skill: [id_effect-compute-fabric](id_effect-compute-fabric/SKILL.md)
 
 ## Verify
 
@@ -80,6 +83,6 @@ cd crates/id_effect/book && mdbook build
 
 - Book: `crates/id_effect/book/`
 - Migration: `book/src/appendix-b-migration.md`
-- ADRs: `docs/adrs/0002-*` … `0006-*`
+- ADRs: `docs/adrs/0002-*` … `0008-*`
 
 Say **id_effect capability DI** — not "v2 DI" or Layer terminology in outward docs.

@@ -11,7 +11,9 @@ Project skills grounded in the **id_effect book** (`crates/id_effect/book/`), wo
 | [id_effect-capabilities](id_effect-capabilities/SKILL.md) | `#[capability]`, `caps!`, `ProviderSpec`, `run_with`, provider graphs |
 | [id_effect-errors](id_effect-errors/SKILL.md) | `Exit`, `Cause`, recovery, error accumulation, CLI exit codes |
 | [id_effect-concurrency](id_effect-concurrency/SKILL.md) | Fibers, `fiber_all`, cancellation, `FiberRef`, scopes, `Schedule` |
-| [id_effect-streams](id_effect-streams/SKILL.md) | `Stream`, `Sink`, chunks, backpressure, Rayon `Parallelism` |
+| [id_effect-compute-fabric](id_effect-compute-fabric/SKILL.md) | `ResourcePolicy`, supervisor admission, `run`/`run_with` Fabric install, implicit parallelism (ADR 0007/0008) |
+| [id_effect-stm](id_effect-stm/SKILL.md) | `Stm`, `TRef`, `commit`/`atomically`, `TQueue`/`TMap`/`TSemaphore` — no I/O in transactions |
+| [id_effect-streams](id_effect-streams/SKILL.md) | `Stream`, `Sink`, chunks, backpressure, Fabric-aware bulk transforms |
 | [id_effect-schema](id_effect-schema/SKILL.md) | `Unknown`, schema combinators, validation, parse errors at boundaries |
 | [id_effect-optics](id_effect-optics/SKILL.md) | Lens, Prism, Traversal, schema paths, JSON patch — Part V ch18 |
 | [id_effect-parse](id_effect-parse/SKILL.md) | Parser combinators, Pretty, Codec, Diff, Stream parse bridges |
@@ -36,14 +38,14 @@ id_effect-fundamentals
       → id_effect-streams | id_effect-schema | id_effect-parse | id_effect-testing
 ```
 
-Skills cross-link at boundaries. Capability DI lives in `id_effect-capabilities`; parallelism policy in `id_effect-streams`; test harness in `id_effect-testing`.
+Skills cross-link at boundaries. Capability DI lives in `id_effect-capabilities`; parallelism policy in `id_effect-compute-fabric` (and streams); STM for shared memory in `id_effect-stm`; test harness in `id_effect-testing`.
 
 ## Canonical sources
 
 - Book: `crates/id_effect/book/` — build with `cd crates/id_effect/book && mdbook build`
 - Examples: `crates/id_effect/examples/` — numbered progression 001–085+
 - Migration: `book/src/appendix-b-migration.md` (async fn, 1.x DI, 2.x → 3.0)
-- ADRs: `docs/adrs/0002-*` through `0006-*`
+- ADRs: `docs/adrs/0002-*` through `0008-*` (Compute Fabric + implicit parallelism)
 
 ## Platform Kitchen Sink missions
 
