@@ -25,7 +25,7 @@
 				"--log-file",
 				"./tmp/debug-mcp-server.log"
 			],
-			"disabled": false,
+			"disabled": true,
 			"autoApprove": [
 				"create_debug_session",
 				"set_breakpoint",
@@ -59,7 +59,7 @@
 			"args": [
 				"scripts/postgres-mcp-wrapper.sh"
 			],
-			"disabled": false,
+			"disabled": true,
 			"description": "Postgres MCP via @yawlabs/postgres-mcp; URL from .env (MCP_POSTGRES_URL / RISK_CALCULATOR_DATABASE_URL); yb-pg -> 127.0.0.1"
 		},
 		"temporal": {
@@ -82,7 +82,7 @@
 				"mcp",
 				"serve"
 			],
-			"disabled": true,
+			"disabled": false,
 			"description": "Maestro MCP via stdio (`maestro mcp serve`; see https://github.com/ReinaMacCredy/maestro#mcp-server)"
 		},
 		"lean-ctx": {
@@ -117,7 +117,7 @@
 				"mcp",
 				"serve"
 			],
-			"disabled": false,
+			"disabled": true,
 			"env": {
 				"DEFINITIVELY_WORKSPACE": "${workspaceFolder}",
 				"DEFINITIVELY_LOG_LEVEL": "WARN"
@@ -133,7 +133,7 @@
 				"QUESTDB_HOST": "localhost",
 				"QUESTDB_PORT": "9000"
 			},
-			"disabled": false,
+			"disabled": true,
 			"description": "QuestDB time-series via questdbmcp (HTTP :9000). Set QUESTDB_HOST/PORT/USERNAME/PASSWORD as needed."
 		}
 	}
