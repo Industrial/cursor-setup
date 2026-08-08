@@ -2,7 +2,8 @@
 name: maestro
 description: >-
   Run Maestro missions and tasks in this repo — spec validate, mission
-  decompose, heavy-mode worktrees, parallel wave claims, verify/ship loop.
+  decompose, parallel wave claims, verify/ship loop. Claims stay on the
+  current branch (`--skip-worktree`; no Maestro worktrees).
   Use when `.maestro/` exists, the user mentions maestro/mission/task/pln-/tsk-,
   or work is tracked under `.maestro/specs/` or `.maestro/missions/`.
 ---
@@ -25,7 +26,7 @@ This repo is Maestro-initialized (`.maestro/MAESTRO.md`). Prefer **CLI** (`maest
 | Product spec | `.maestro/specs/<slug>.md` | Acceptance criteria, `mode: heavy` for multi-PR |
 | Mission record | `.maestro/missions/missions.jsonl` | `pln-…` id, links `spec_path` |
 | Mission sidecar | `.maestro/missions/<slug>.md` | Verbatim plan / narrative (optional) |
-| Execution overlay | `.maestro/missions/<slug>.execution.md` | Parallel waves, worktrees, subagents |
+| Execution overlay | `.maestro/missions/<slug>.execution.md` | Parallel waves, subagents (same checkout) |
 | Task | `.maestro/tasks/tasks.jsonl` | `tsk-…` — one PR per task (ADR-0006) |
 
 ## Heavy-mode loop (multi-PR)
@@ -35,7 +36,7 @@ maestro spec validate .maestro/specs/<slug>.md
 maestro mission from-spec .maestro/specs/<slug>.md    # -> approved, pln-...
 maestro mission decompose <pln-id> --file tasks.json  # -> planned + draft children
 maestro mission show <pln-id>
-maestro task claim <tsk-id> --agent <agent-id>        # auto worktree (heavy)
+maestro task claim <tsk-id> --agent <agent-id> --skip-worktree   # current branch only
 maestro task verify <tsk-id>
 maestro task ship <tsk-id> [--pr-url <url>]
 ```
@@ -49,9 +50,9 @@ When `.maestro/missions/<slug>.execution.md` exists, **follow its wave table** �
 Pattern for parallel wave after foundation ships:
 
 1. Ship wave-0 task and merge PR on main.
-2. Launch **two** agents (Cursor subagents / worktrees), each:
-   - `maestro task claim <tsk-a> --agent …`
-   - `maestro task claim <tsk-b> --agent …`
+2. Launch **two** agents (Cursor subagents on the **same checkout**), each:
+   - `maestro task claim <tsk-a> --agent … --skip-worktree`
+   - `maestro task claim <tsk-b> --agent … --skip-worktree`
 3. Resolve PR conflicts by dependency order documented in the execution overlay.
 
 Optional intra-task split while parent is claimed:
@@ -90,6 +91,8 @@ Every claim, verify, block, and handoff on Rust migration missions: run **`/skil
 - Hand-write heavy specs without acceptance criteria / `mode: heavy` when using `mission from-spec`.
 - Claim multiple tasks on one agent unless the user directs it.
 - Skip `verify` before `ship`.
+- Create Maestro worktrees or claim without `--skip-worktree` — stay on the currently checked-out branch.
+- Use MCP `maestro_task_claim` for claims (no skip flag; auto-creates heavy worktrees).
 - Encode FSM logic in CLI/MCP boundaries — keep orchestration in `Workflow.Engine` per the mission plan.
 
 ## See also

@@ -30,5 +30,6 @@ Slash entrypoints live as flat files under `.cursor/commands/id*.md` (Cursor doe
 
 - PLAN → `/plan-hierarchically` (by reference)
 - EXECUTE → Maestro claim→verify→ship + Definitively gates
+- **Workspace policy:** no Maestro worktrees — `maestro task claim … --skip-worktree`; stay on the currently checked-out branch
 - Agents → `.cursor/rules/agent-*.mdc`
 - Skill → `.cursor/skills/id-workflow/SKILL.md`

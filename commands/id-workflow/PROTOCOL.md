@@ -29,6 +29,7 @@ Lane skip rules: see [lanes.md](lanes.md).
 5. **Quality floor:** correctness > brevity. Sharpen the ask (see `/quality`).
 6. **No parallel trackers:** no BMAD stories, RIPER memory-bank, or markdown TODO files for task state — Maestro `tsk-`/`pln-` only.
 7. **Compose, do not duplicate:** PLAN delegates to `/plan-hierarchically`; EXECUTE to Maestro claim→verify→ship + Definitively gates.
+8. **No Maestro worktrees:** claim with CLI `--skip-worktree` only. Keep all edits on the currently checked-out branch. Never `cd` into `.maestro/worktrees/` paths or sibling `*-tsk-*` trees. Do not use MCP `maestro_task_claim` for claims (it auto-creates heavy-mode worktrees and has no skip flag).
 
 ## Mode ↔ agent
 
@@ -52,5 +53,7 @@ Lane skip rules: see [lanes.md](lanes.md).
 - Implementing during RESEARCH or PLAN
 - Skipping PLAN on `heavy` lane
 - Claiming Maestro tasks without contract_show
+- Claiming via MCP / without `--skip-worktree` (creates worktrees)
+- Leaving the current branch for a Maestro-created worktree or `feat/<slug>` claim branch
 - Inventing a second issue system
 - Advancing modes without checklist pass

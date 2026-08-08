@@ -285,7 +285,7 @@ When user approves and work begins:
 For each **parallel wave** in the execution overlay, launch **N Task subagents in one message** — one subagent per task in the wave. Each subagent prompt must include:
 
 - `tsk-...` id and leaf AC from the plan
-- `spec_path`, `worktree_path` (heavy mode)
+- `spec_path` (heavy mode; do not rely on `worktree_path` — claims use `--skip-worktree`)
 - Gates to run before ship
 - `tool: "cursor"` (or agent name) for handoff continuity
 
@@ -294,7 +294,8 @@ Parent agent **does not implement wave tasks itself** when subagents are availab
 ### Per-subagent Maestro loop (MCP)
 
 ```
-maestro_task_claim       { id, agent_id, tool: "<your-tool-name>" }
+# CLI only — MCP claim auto-creates worktrees; ID policy = current branch
+devenv shell -- maestro task claim <id> --agent <agent_id> --skip-worktree --tool <your-tool-name>
 maestro_contract_show    { taskId }           # read scope before editing
 ... implement leaf ...
 maestro_contract_amend   { taskId, addPaths, reason }   # if scope grew legitimately
@@ -450,7 +451,7 @@ Use **every** tool where applicable — not just claim/ship.
 | `maestro_task_from_spec` | Light spec → draft task |
 | `maestro_task_list` | Discovery by state/mission |
 | `maestro_task_get` | Full task detail + children |
-| `maestro_task_claim` | Start work (+ auto worktree heavy) |
+| CLI `maestro task claim … --skip-worktree` | Start work on current branch (no worktree) |
 | `maestro_task_split` | Parallel/sequential child slices |
 | `maestro_task_block` | Block with reason |
 | `maestro_task_abandon` | Drop task (+ cascade) |

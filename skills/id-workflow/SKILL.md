@@ -23,6 +23,7 @@ Canonical pack: `.cursor/commands/id-workflow/` (PROTOCOL, lanes, modes, checkli
 3. Human approve before EXECUTE (unless plan+implement)
 4. Tracker = Maestro only
 5. PLAN body = `/plan-hierarchically`; do not fork it
+6. No Maestro worktrees — claim via CLI `--skip-worktree`; keep edits on the current branch
 
 ## Mode files
 

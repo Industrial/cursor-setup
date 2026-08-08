@@ -94,14 +94,14 @@ Each subagent prompt MUST include:
 Task: <tsk-id> (<leaf-slug>)
 Spec: .maestro/specs/<slug>.md
 Plan leaf: .cursor/plans/<slug>.plan.md#<leaf-slug>
-Worktree: <from maestro_task_claim if heavy mode>
+Branch: stay on the currently checked-out branch (no Maestro worktree)
 Acceptance criteria: <copy from plan leaf — all must-pass>
 Gates: <table from plan leaf>
 Domain skills: <from plan "Skills reviewed">
 Tool name: <cursor | agent id for handoff continuity>
 
 Follow implement-hierarchical-plan skill:
-1. maestro_task_claim { id, agent_id, tool }
+1. CLI: maestro task claim <id> --agent <agent_id> --skip-worktree --tool <tool>
 2. maestro_contract_show { taskId }
 3. Implement only contract paths; maestro_contract_amend if scope grew
 4. Run every gate; maestro_evidence_record after each
@@ -130,7 +130,8 @@ Confirm every wave-N task is `shipped` and PRs merged (or user-directed integrat
 Every implementer (subagent or solo parent on sequential leaves) runs this loop:
 
 ```
-maestro_task_claim       { id, agent_id, tool: "<name>" }
+# Claim via CLI only — MCP maestro_task_claim always creates heavy worktrees
+devenv shell -- maestro task claim <id> --agent <agent_id> --skip-worktree --tool <name>
 maestro_contract_show    { taskId }
 maestro_policy_check     { taskId }              # before editing
 ... implement leaf per plan AC + file structure ...
@@ -233,7 +234,8 @@ Project into a 5-line delta; do not skip when the plan leaf lists unfamiliar pat
 - Shipping without `maestro_verdict_request` PASS
 - `maestro_task_from_spec` on a `mode: heavy` spec (use mission path)
 - Re-planning mid-wave instead of `maestro_task_block` + handoff
-- Using CLI when an MCP tool exists for the same operation
+- Using CLI when an MCP tool exists for the same operation (exception: always CLI `--skip-worktree` for claim)
+- Creating or entering Maestro worktrees / leaving the current branch for claim
 
 ## MCP tool quick reference
 
@@ -244,7 +246,7 @@ Project into a 5-line delta; do not skip when the plan leaf lists unfamiliar pat
 | `maestro_mission_show` | Wave status between waves |
 | `maestro_task_list` | Find draft/claimed/blocked tasks |
 | `maestro_task_get` | Full leaf detail |
-| `maestro_task_claim` | Start leaf (+ worktree heavy) |
+| CLI `maestro task claim … --skip-worktree` | Start leaf on current branch (do not use MCP claim) |
 | `maestro_task_split` | Intra-leaf parallel slices |
 | `maestro_task_block` / `abandon` | Stop work |
 | `maestro_task_ship` | Complete leaf |
