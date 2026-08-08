@@ -4,6 +4,8 @@
 4. **GitHub CLI:** Use the `gh` cli for GitHub when needed.
 5. Verify MCP servers from `.cursor/mcp.json`:
 
-   **Always on:** lean-ctx · roam-code · context7 · searxng · github · maestro
+   **Always on:** lean-ctx · roam-code · context7 · searxng · github (official Docker image) · maestro
 
-   **On demand** (enable in mcp.json when needed): postgres · questdb · mcp-debugger · definitively · temporal · playwright · chrome-devtools · figma-mcp-go
+   **On demand** (set `disabled: false` when needed): rust-docs · nats · docker · postgres · questdb · mcp-debugger · definitively · temporal · playwright · chrome-devtools · figma-mcp-go
+
+   **Secrets:** `GITHUB_PERSONAL_ACCESS_TOKEN` for github MCP (fine-grained PAT).

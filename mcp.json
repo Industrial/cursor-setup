@@ -13,7 +13,7 @@
 				"@vkhanhqui/figma-mcp-go"
 			],
 			"disabled": true,
-			"description": "Figma via plugin bridge (https://github.com/vkhanhqui/figma-mcp-go) \u2014 run the companion plugin in Figma Desktop"
+			"description": "Figma via plugin bridge (https://github.com/vkhanhqui/figma-mcp-go) — run the companion plugin in Figma Desktop"
 		},
 		"mcp-debugger": {
 			"command": "bunx",
@@ -40,11 +40,20 @@
 			"disabled": true
 		},
 		"github": {
-			"command": "bunx",
+			"command": "docker",
 			"args": [
-				"@modelcontextprotocol/server-github@latest"
+				"run",
+				"-i",
+				"--rm",
+				"-e",
+				"GITHUB_PERSONAL_ACCESS_TOKEN",
+				"ghcr.io/github/github-mcp-server"
 			],
-			"disabled": false
+			"env": {
+				"GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_PERSONAL_ACCESS_TOKEN}"
+			},
+			"disabled": false,
+			"description": "Official GitHub MCP (ghcr.io/github/github-mcp-server). Set GITHUB_PERSONAL_ACCESS_TOKEN to a fine-grained PAT. npm @modelcontextprotocol/server-github is deprecated."
 		},
 		"chrome-devtools": {
 			"command": "bunx",
@@ -135,6 +144,48 @@
 			},
 			"disabled": true,
 			"description": "QuestDB time-series via questdbmcp (HTTP :9000). Set QUESTDB_HOST/PORT/USERNAME/PASSWORD as needed."
+		},
+		"rust-docs": {
+			"command": "bash",
+			"args": [
+				"-lc",
+				"export PATH=\"$HOME/.cargo/bin:$PATH\"; command -v rust-docs-mcp >/dev/null 2>&1 || cargo install rust-docs-mcp --locked; exec rust-docs-mcp"
+			],
+			"disabled": true,
+			"description": "docs.rs / crates.io crate docs + source (https://github.com/snowmead/rust-docs-mcp). First launch may cargo-install. Enable when needed."
+		},
+		"nats": {
+			"command": "docker",
+			"args": [
+				"run",
+				"-i",
+				"--rm",
+				"--init",
+				"--network",
+				"host",
+				"-e",
+				"NATS_URL",
+				"-e",
+				"NATS_NO_AUTHENTICATION",
+				"ghcr.io/sinadarbouy/mcp-nats:0.1.4",
+				"--transport",
+				"stdio",
+				"--no-authentication"
+			],
+			"env": {
+				"NATS_URL": "nats://127.0.0.1:4222",
+				"NATS_NO_AUTHENTICATION": "true"
+			},
+			"disabled": true,
+			"description": "NATS / JetStream inspect via mcp-nats (https://github.com/sinadarbouy/mcp-nats). Points at local nats://127.0.0.1:4222. Enable when debugging bus."
+		},
+		"docker": {
+			"command": "uvx",
+			"args": [
+				"mcp-server-docker"
+			],
+			"disabled": true,
+			"description": "Docker containers/logs/volumes (https://github.com/ckreiling/mcp-server-docker). Enable when debugging compose services."
 		}
 	}
 }
