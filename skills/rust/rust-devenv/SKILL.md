@@ -224,7 +224,7 @@ languages.rust.lld.enable = true;    # macOS-friendly
 | Symptom | Fix |
 |---------|-----|
 | `libz.so.1 not found` at runtime | Add `zlib` to `LD_LIBRARY_PATH` |
-| PyPI wheel / binary won't run | Use nix-packaged tool (`ty`, `beads`) or build in devenv |
+| PyPI wheel / binary won't run | Use nix-packaged tool (`ty`, `ruff`) or build in devenv |
 | Moon downloads its own Rust | Set `MOON_TOOLCHAIN_FORCE_GLOBALS=rust` |
 | bindgen can't find libstdc++ headers | `BINDGEN_EXTRA_CLANG_ARGS` with full GCC path |
 | Hook hangs on cargo lock | `MOON_CONCURRENCY=1`, `TMPDIR=$DEVENV_ROOT/tmp` |

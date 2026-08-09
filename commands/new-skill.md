@@ -67,7 +67,7 @@ Scan the full thread (user messages, assistant reasoning, tool output, errors fi
 |------|---------|
 | **Domain** | Logto org roles, Temporal child workflows, Drizzle migrations |
 | **Repo-specific convention** | `devenv shell --`, `@idclear/effect-react` layer split |
-| **Workflow** | How to debug e2e serial failures, how to claim bd tasks |
+| **Workflow** | How to debug e2e serial failures, how to claim Maestro tasks |
 | **Decision / ADR** | Why mutations go through API routes, not server actions |
 | **Pitfall** | Mistake made and corrected in-thread |
 | **Tooling** | MCP server usage patterns for this repo |
@@ -232,7 +232,7 @@ color: purple
 - Shell commands wrapped with `devenv shell --` when this repo uses devenv
 - Effect.ts skills: Layer-based testing, no `vi.mock` for Effect services
 - Auth: prefer `logto/` skills over generic `clerk-nextjs-skills` / `authjs-skills` for this repo
-- Task tracking: reference `bd` / beads, not markdown TODO lists
+- Task tracking: reference Maestro (`maestro` / `.maestro/`), not markdown TODO lists
 - Navigation: mention `roam` commands where blast-radius matters
 
 ---

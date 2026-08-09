@@ -118,7 +118,7 @@ Generate 10–15; cluster; pick 1–3 **most catalytic** (highest leverage if an
 - Success metrics from Step 2
 - Communication plan
 
-**Output:** Action plan ready for **bd** issues or sprint tickets.
+**Output:** Action plan ready for Maestro tasks or sprint tickets.
 
 ## Full Output Template
 

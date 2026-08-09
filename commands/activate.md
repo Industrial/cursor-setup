@@ -1,6 +1,6 @@
 1. **LeanCTX:** Run `devenv shell -- lean-ctx cheatsheet` (daily workhorse: read/search/edit/shell/tree).
 2. **Roam:** Run `devenv shell -- roam health` to verify codebase index.
-3. **Beads:** Run `devenv shell -- bd prime`.
+3. **Maestro:** Run `devenv shell -- maestro status --json` (missions/tasks).
 4. **GitHub CLI:** Use the `gh` cli for GitHub when needed.
 5. Verify MCP servers from `.cursor/mcp.json`:
 
