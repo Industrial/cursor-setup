@@ -15,7 +15,7 @@ in {
       beautysh
       biome
       deadnix
-      rustfmt
+      # rustfmt comes from languages.rust (rust-overlay); nixpkgs rustfmt shadows it
       taplo
       treefmt
       vulnix

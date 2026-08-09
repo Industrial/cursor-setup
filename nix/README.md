@@ -6,11 +6,21 @@ Composable [devenv](https://devenv.sh) modules for Industrial repos.
 
 ```text
 .cursor/nix/
-  default.nix                 # barrel: imports every feature module
-  devenv.yaml                 # optional shared input defaults
+  default.nix / default.assay.nix
+  devenv.nix  / devenv.assay.nix
+  devenv.yaml
+  lib/
+    assay.nix                 # pinned Industrial/assay claim DSL
+    feature-eval.nix          # evalModules + freeform (no per-feature stub inventory)
   features/
-    program-*.nix             # pinned CLI derivations
-    *.nix                     # packages, env, languages, hooks, enterShell
+    foo.nix / foo.assay.nix   # each module has a co-located suite
+```
+
+## Tests
+
+```bash
+assay run nix                 # from cursor-setup repo root
+assay-dogfood                 # when program-assay is enabled in devenv
 ```
 
 ## Enable API
@@ -24,6 +34,7 @@ Each feature defaults to **off**. In the **consumer repo** root `devenv.nix`:
   cursor.features.program-moon.enable = true;
   cursor.features.program-lean-ctx.enable = true;
   cursor.features.program-roam-code.enable = true;
+  cursor.features.program-assay.enable = true;
   cursor.features.dotenv.enable = true;
   cursor.features.packages-base.enable = true;
   cursor.features.packages-rust-dev.enable = true;

@@ -50,7 +50,8 @@ in {
     };
     releaseHash = lib.mkOption {
       type = lib.types.nullOr lib.types.str;
-      default = null;
+      # sha256 of assay-x86_64-unknown-linux-gnu.tar.gz from github:Industrial/assay v0.1.0
+      default = "sha256-mj35QCJAbNpu4MtR/5FYEPUWZ1tLvKzgNMrullPuDrs=";
       description = "SRI hash of the linux-gnu release tarball; null uses nix run wrapper";
     };
     dogfood = lib.mkEnableOption "assay-dogfood helper script" // {default = true;};
@@ -63,12 +64,17 @@ in {
       exec = ''
         set -euo pipefail
         root="''${DEVENV_ROOT:-.}"
-        suite="''${ASSAY_DOGFOOD_SUITE:-$root/nix/assay/tests/dogfood.assay.nix}"
-        if [[ ! -f "$suite" ]]; then
-          echo "assay-dogfood: missing $suite" >&2
+        if [[ -n "''${ASSAY_DOGFOOD_SUITE:-}" ]]; then
+          target="$ASSAY_DOGFOOD_SUITE"
+        elif [[ -d "$root/nix" && -f "$root/nix/default.assay.nix" ]]; then
+          target="$root/nix"
+        elif [[ -d "$root/.cursor/nix" && -f "$root/.cursor/nix/default.assay.nix" ]]; then
+          target="$root/.cursor/nix"
+        else
+          echo "assay-dogfood: missing nix/ or .cursor/nix assay suites" >&2
           exit 1
         fi
-        assay run "$suite"
+        assay run "$target"
       '';
     };
   };
