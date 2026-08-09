@@ -11,6 +11,25 @@ description: >-
 
 Status-quo patterns from `~/Code/rust` workspaces and [devenv Rust docs](https://devenv.sh/languages/rust/). This repo is Python-first but shares Moon, prek, treefmt, and lean-ctx wiring — reuse the same shell discipline when Rust crates land here.
 
+## Shared modules (`.cursor/nix`)
+
+Industrial shells compose enableable modules from this submodule:
+
+```nix
+{ lib, ... }: {
+  imports = [ ./.cursor/nix ];
+  cursor.features.moon.enable = true;
+  cursor.features.languages-rust.enable = true;
+  # … see `.cursor/nix/README.md`
+  enterShell = lib.mkAfter ''# project-only hooks'';
+}
+```
+
+- Layout: flat `features/` (`program-*` for pinned CLIs; packages/env/languages/hooks alongside).
+- Defaults are **off**; consumer root enables what it needs.
+- Env defaults use soft priority so devenv dotenv / `.env` wins on conflict.
+- Do **not** put project-brand labels in `.cursor/nix` paths or identifiers.
+
 ## Before changing devenv
 
 1. Read existing `devenv.yaml` inputs and `devenv.nix` — do not duplicate toolchain config in `rust-toolchain.toml` **and** manual `channel`/`version` (devenv asserts on conflict).
@@ -29,7 +48,7 @@ Project has rust-toolchain.toml?
 | Channel | When | Notes |
 |---------|------|-------|
 | `toolchainFile` | Repo already pins `rust-toolchain.toml` | Best DRY; uses oxalica `fromRustupToolchainFile` |
-| `stable` | Default for apps (`forge`, `streamweave`, `syo`) | Pin `version` when CI must be reproducible |
+| `stable` | Default for apps (`forge`, `streamweave`, and similar) | Pin `version` when CI must be reproducible |
 | `nightly` | `rustc_private`, Dylint, Miri, Cranelift dev | `id_effect` uses nightly + `rustc-dev` |
 | `nixpkgs` | Avoid for serious Rust workspaces | Tied to nixpkgs rev; limited components |
 
@@ -117,7 +136,7 @@ env = {
 
 ### NixOS runtime linking
 
-Python/Rust mixed shells (`syo`, this repo) often need:
+Python/Rust mixed shells often need:
 
 ```nix
 env.LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath [
@@ -143,7 +162,7 @@ GCC version in bindgen args must match `stdenv.cc` — Nix installs under `inclu
 
 ## enterShell hook pattern
 
-Standard sequence from `id_effect` / `forge` / `syo`:
+Standard sequence from `id_effect` / `forge` / shared Industrial shells:
 
 ```nix
 enterShell = ''
@@ -195,7 +214,7 @@ Member crates inherit via `^:test` / `^:clippy` deps. Set `language: rust` on ea
 
 ## Building Rust tools inside devenv.nix
 
-Pin CLI crates with `pkgs.rustPlatform.buildRustPackage` (lean-ctx in `syo` / this repo):
+Pin CLI crates with `pkgs.rustPlatform.buildRustPackage` (lean-ctx via `.cursor/nix` features):
 
 ```nix
 lean-ctx-pkg = pkgs.rustPlatform.buildRustPackage rec {
