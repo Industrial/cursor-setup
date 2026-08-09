@@ -5,6 +5,7 @@
     ./features/program-moon.nix
     ./features/program-roam-code.nix
     ./features/program-lean-ctx.nix
+    ./features/program-assay.nix
 
     ./features/dotenv.nix
     ./features/packages-base.nix
