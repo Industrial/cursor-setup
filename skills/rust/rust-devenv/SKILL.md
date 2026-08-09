@@ -18,7 +18,7 @@ Industrial shells compose enableable modules from this submodule:
 ```nix
 { lib, ... }: {
   imports = [ ./.cursor/nix ];
-  cursor.features.moon.enable = true;
+  cursor.features.program-moon.enable = true;
   cursor.features.languages-rust.enable = true;
   # … see `.cursor/nix/README.md`
   enterShell = lib.mkAfter ''# project-only hooks'';

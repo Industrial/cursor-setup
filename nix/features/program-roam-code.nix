@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: let
-  cfg = config.cursor.features.roam-code;
+  cfg = config.cursor.features.program-roam-code;
   # https://github.com/Cranot/roam-code — pin to a tagged release with MCP support.
   roam-code-src = pkgs.fetchFromGitHub {
     owner = "Cranot";
@@ -28,7 +28,7 @@
     doCheck = false;
   };
 in {
-  options.cursor.features.roam-code.enable = lib.mkEnableOption "roam-code CLI + MCP";
+  options.cursor.features.program-roam-code.enable = lib.mkEnableOption "roam-code CLI + MCP";
 
   config = lib.mkIf cfg.enable {
     packages = [roam-code];

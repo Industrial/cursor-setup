@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: let
-  cfg = config.cursor.features.moon;
+  cfg = config.cursor.features.program-moon;
   # Moon from GitHub releases (x86_64-linux). See https://moonrepo.dev/docs/install
   moon = pkgs.stdenv.mkDerivation {
     pname = "moon-cli";
@@ -29,7 +29,7 @@
     };
   };
 in {
-  options.cursor.features.moon.enable = lib.mkEnableOption "Moon task runner CLI (pinned release)";
+  options.cursor.features.program-moon.enable = lib.mkEnableOption "Moon task runner CLI (pinned release)";
 
   config = lib.mkIf cfg.enable {
     packages = [moon];

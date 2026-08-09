@@ -21,9 +21,9 @@ Each feature defaults to **off**. In the **consumer repo** root `devenv.nix`:
 { pkgs, lib, ... }: {
   imports = [ ./.cursor/nix ];
 
-  cursor.features.moon.enable = true;
-  cursor.features.lean-ctx.enable = true;
-  cursor.features.roam-code.enable = true;
+  cursor.features.program-moon.enable = true;
+  cursor.features.program-lean-ctx.enable = true;
+  cursor.features.program-roam-code.enable = true;
   cursor.features.dotenv.enable = true;
   cursor.features.packages-base.enable = true;
   cursor.features.packages-rust-dev.enable = true;

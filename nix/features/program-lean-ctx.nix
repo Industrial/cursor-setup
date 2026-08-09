@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: let
-  cfg = config.cursor.features.lean-ctx;
+  cfg = config.cursor.features.program-lean-ctx;
   # https://github.com/yvgude/lean-ctx
   # Named lean-ctx-pkg so `with pkgs` does not pick nixpkgs' `lean-ctx`.
   lean-ctx-pkg = pkgs.rustPlatform.buildRustPackage rec {
@@ -19,7 +19,7 @@
     doCheck = false;
   };
 in {
-  options.cursor.features.lean-ctx.enable = lib.mkEnableOption "lean-ctx MCP + CLI";
+  options.cursor.features.program-lean-ctx.enable = lib.mkEnableOption "lean-ctx MCP + CLI";
 
   config = lib.mkIf cfg.enable {
     packages = [lean-ctx-pkg];
