@@ -3,14 +3,13 @@ let
   h = import ../lib/feature-eval.nix {};
   off = h.feature ./languages-rust.nix {};
   on = h.feature ./languages-rust.nix {cursor.features.languages-rust.enable = true;};
-  custom =
-    h.feature ./languages-rust.nix {
-      cursor.features.languages-rust = {
-        enable = true;
-        channel = "stable";
-        version = "1.88.0";
-      };
+  custom = h.feature ./languages-rust.nix {
+    cursor.features.languages-rust = {
+      enable = true;
+      channel = "stable";
+      version = "1.88.0";
     };
+  };
 in
   assay.suite "languages-rust" {
     disabled = assay.eq off.languages.rust.enable false;

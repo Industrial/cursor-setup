@@ -3,20 +3,18 @@ let
   h = import ../lib/feature-eval.nix {};
   off = h.feature ./program-assay.nix {};
   on = h.feature ./program-assay.nix {cursor.features.program-assay.enable = true;};
-  noDogfood =
-    h.feature ./program-assay.nix {
-      cursor.features.program-assay = {
-        enable = true;
-        dogfood = false;
-      };
+  noDogfood = h.feature ./program-assay.nix {
+    cursor.features.program-assay = {
+      enable = true;
+      dogfood = false;
     };
-  flake =
-    h.feature ./program-assay.nix {
-      cursor.features.program-assay = {
-        enable = true;
-        releaseHash = null;
-      };
+  };
+  flake = h.feature ./program-assay.nix {
+    cursor.features.program-assay = {
+      enable = true;
+      releaseHash = null;
     };
+  };
   has = name: names: builtins.elem name names;
 in
   assay.suite "program-assay" {

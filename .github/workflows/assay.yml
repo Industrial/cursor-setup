@@ -1,5 +1,4 @@
 name: assay
-
 on:
   push:
     branches: [main]
@@ -11,17 +10,14 @@ on:
       - "nix/**"
       - ".github/workflows/assay.yml"
   workflow_dispatch:
-
 jobs:
   nix-assay:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@v16
-
       - name: Run assay suites
         run: |
           nix run github:Industrial/assay/v0.1.0 -- run nix

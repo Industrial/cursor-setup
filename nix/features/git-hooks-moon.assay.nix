@@ -3,14 +3,13 @@ let
   h = import ../lib/feature-eval.nix {};
   off = h.feature ./git-hooks-moon.nix {};
   on = h.feature ./git-hooks-moon.nix {cursor.features.git-hooks-moon.enable = true;};
-  custom =
-    h.feature ./git-hooks-moon.nix {
-      cursor.features.git-hooks-moon = {
-        enable = true;
-        preCommitTargets = ":test";
-        prePushTargets = ":coverage";
-      };
+  custom = h.feature ./git-hooks-moon.nix {
+    cursor.features.git-hooks-moon = {
+      enable = true;
+      preCommitTargets = ":test";
+      prePushTargets = ":coverage";
     };
+  };
   has = name: builtins.elem name on.scripts;
 in
   assay.suite "git-hooks-moon" {

@@ -3,13 +3,12 @@ let
   h = import ../lib/feature-eval.nix {};
   off = h.feature ./git-hooks-prek.nix {};
   on = h.feature ./git-hooks-prek.nix {cursor.features.git-hooks-prek.enable = true;};
-  custom =
-    h.feature ./git-hooks-prek.nix {
-      cursor.features.git-hooks-prek = {
-        enable = true;
-        configFile = "custom-hooks.yaml";
-      };
+  custom = h.feature ./git-hooks-prek.nix {
+    cursor.features.git-hooks-prek = {
+      enable = true;
+      configFile = "custom-hooks.yaml";
     };
+  };
 in
   assay.suite "git-hooks-prek" {
     disabled = assay.eq off.git-hooks {};

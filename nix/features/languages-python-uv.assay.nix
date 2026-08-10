@@ -3,14 +3,13 @@ let
   h = import ../lib/feature-eval.nix {};
   off = h.feature ./languages-python-uv.nix {};
   on = h.feature ./languages-python-uv.nix {cursor.features.languages-python-uv.enable = true;};
-  custom =
-    h.feature ./languages-python-uv.nix {
-      cursor.features.languages-python-uv = {
-        enable = true;
-        version = "3.11";
-        syncArguments = ["--no-install-project" "--group" "dev"];
-      };
+  custom = h.feature ./languages-python-uv.nix {
+    cursor.features.languages-python-uv = {
+      enable = true;
+      version = "3.11";
+      syncArguments = ["--no-install-project" "--group" "dev"];
     };
+  };
 in
   assay.suite "languages-python-uv" {
     disabled = assay.eq off.languages.python.enable false;
