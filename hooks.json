@@ -33,6 +33,11 @@
         "command": ".cursor/hooks/block-native-edit.sh",
         "matcher": "Write|StrReplace|Delete|Edit|ApplyPatch|EditNotebook",
         "timeout": 5
+      },
+      {
+        "command": ".cursor/hooks/block-native-shell.sh",
+        "matcher": "Shell|AwaitShell",
+        "timeout": 5
       }
     ]
   }

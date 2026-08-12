@@ -6,7 +6,7 @@ priority: critical
 
 # Tool routing (lean-ctx first)
 
-Native Read / Grep / SemanticSearch / WebSearch / WebFetch / Write / StrReplace / Delete are **denied by hooks**. Do not call them. Do not retry after a deny.
+Native Read / Grep / SemanticSearch / WebSearch / WebFetch / Write / StrReplace / Delete / Shell / AwaitShell are **denied by hooks**. Do not call them. Do not retry after a deny.
 
 ## Mapping (use immediately)
 
@@ -15,7 +15,7 @@ Native Read / Grep / SemanticSearch / WebSearch / WebFetch / Write / StrReplace 
 | Read | `CallMcpTool` → lean-ctx `ctx_read` (mode `full` before edit) |
 | Grep | lean-ctx `ctx_search` |
 | Glob / ls / find | lean-ctx `ctx_tree` |
-| Shell (when available via MCP) | lean-ctx `ctx_shell` (`devenv shell -- …` inside) |
+| Shell / AwaitShell | lean-ctx `ctx_shell` (`devenv shell -- …` inside) |
 | SemanticSearch | roam-code `roam_explore` / `roam_search_symbol`, or lean-ctx `ctx_semantic_search` |
 | WebSearch / WebFetch | searxng / Context7 |
 | Write / StrReplace / Edit | **lean-ctx `ctx_edit`** |
@@ -34,3 +34,4 @@ Server id is typically `project-0-solana-yield-optimizer-lean-ctx` (or `lean-ctx
 - Retrying a denied native tool
 - Using native Write/StrReplace because "lean-ctx is for reads only" — in this repo, **edits go through MCP too**
 - Falling back to ApplyPatch/Edit after Read was blocked
+- Using native Shell because "devenv wrap is enough" — Shell is hook-denied; use `ctx_shell`
