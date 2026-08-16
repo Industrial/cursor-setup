@@ -8,10 +8,10 @@
   # Moon from GitHub releases (x86_64-linux). See https://moonrepo.dev/docs/install
   moon = pkgs.stdenv.mkDerivation {
     pname = "moon-cli";
-    version = "2.4.6";
+    version = "2.5.0";
     src = pkgs.fetchurl {
-      url = "https://github.com/moonrepo/moon/releases/download/v2.4.6/moon_cli-x86_64-unknown-linux-gnu.tar.xz";
-      sha256 = "15qxylhy5s9p1dm1w87a0sh8cx98gqx4phcnlf2r8gnrvlc4nshh";
+      url = "https://github.com/moonrepo/moon/releases/download/v2.5.0/moon_cli-x86_64-unknown-linux-gnu.tar.xz";
+      sha256 = "0fvxx7jr67xp95w8kyxky7caq8rf4dimrprr6wish3nicnb6vp65";
     };
     nativeBuildInputs = [pkgs.autoPatchelfHook];
     buildInputs = [pkgs.stdenv.cc.cc.lib];
