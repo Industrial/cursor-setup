@@ -13,7 +13,7 @@
 				"@vkhanhqui/figma-mcp-go"
 			],
 			"disabled": true,
-			"description": "Figma via plugin bridge (https://github.com/vkhanhqui/figma-mcp-go) — run the companion plugin in Figma Desktop"
+			"description": "Figma via plugin bridge (https://github.com/vkhanhqui/figma-mcp-go) \u2014 run the companion plugin in Figma Desktop"
 		},
 		"mcp-debugger": {
 			"command": "bunx",
@@ -91,7 +91,7 @@
 				"mcp",
 				"serve"
 			],
-			"disabled": false,
+			"disabled": true,
 			"description": "Maestro MCP via stdio (`maestro mcp serve`; see https://github.com/ReinaMacCredy/maestro#mcp-server)"
 		},
 		"lean-ctx": {
@@ -186,6 +186,18 @@
 			],
 			"disabled": true,
 			"description": "Docker containers/logs/volumes (https://github.com/ckreiling/mcp-server-docker). Enable when debugging compose services."
+		},
+		"serena": {
+			"type": "stdio",
+			"command": "bash",
+			"args": [
+				"scripts/serena-mcp-wrapper.sh",
+				"--project-from-cwd",
+				"--log-level",
+				"WARNING"
+			],
+			"disabled": false,
+			"description": "Serena MCP (@oraios/serena); run devenv shell once so .devenv/state/venv exists"
 		}
 	}
 }
