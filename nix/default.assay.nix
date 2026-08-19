@@ -17,15 +17,21 @@ let
     "packages-formatters"
     "packages-rust-dev"
     "program-assay"
+    "program-context7"
+    "program-hermes"
     "program-lean-ctx"
+    "program-maestro"
     "program-moon"
+    "program-omniroute"
     "program-roam-code"
+    "program-roam-code-pypi"
+    "program-serena"
   ];
   idle = h.feature ./default.nix {};
 in
   assay.suite "default" {
     exposesAllFeatures = assay.eq (builtins.sort builtins.lessThan names) expected;
-    featureCount = assay.eq (builtins.length names) 16;
+    featureCount = assay.eq (builtins.length names) 22;
     idlePackagesEmpty = assay.eq idle.packages [];
     idleDotenvOff = assay.eq idle.dotenv.enable false;
     idleScriptsEmpty = assay.eq idle.scripts [];
