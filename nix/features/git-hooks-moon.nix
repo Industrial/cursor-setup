@@ -11,12 +11,14 @@ in {
     enable = lib.mkEnableOption "Moon git-hook scripts + Rust/Moon/nextest env defaults";
     preCommitTargets = lib.mkOption {
       type = lib.types.str;
-      default = ":ci-format :check :clippy :test --affected --status=staged";
+      # Notebooks only — do not fan out to crates/* via workspace :test/:coverage.
+      default = "andromeda:coverage afml:coverage";
       description = "Moon targets for the pre-commit script";
     };
     prePushTargets = lib.mkOption {
       type = lib.types.str;
-      default = ":ci-format :build :coverage :audit";
+      # Notebooks only — do not fan out to crates/* via workspace :build/:coverage/:audit.
+      default = "andromeda:coverage afml:coverage";
       description = "Moon targets for the pre-push script";
     };
   };

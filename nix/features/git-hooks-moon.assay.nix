@@ -31,8 +31,8 @@ in
     rustLog = assay.eq on.env.RUST_LOG "info";
     preCommitScript = assay.eq (has "pre-commit") true;
     prePushScript = assay.eq (has "pre-push") true;
-    preCommitDefault = assay.eq (builtins.match ".*:ci-format.*" on.scriptExec.pre-commit != null) true;
-    prePushDefault = assay.eq (builtins.match ".*:coverage.*" on.scriptExec.pre-push != null) true;
+    preCommitDefault = assay.eq (builtins.match ".*andromeda:coverage.*" on.scriptExec.pre-commit != null) true;
+    prePushDefault = assay.eq (builtins.match ".*afml:coverage.*" on.scriptExec.pre-push != null) true;
     customPreCommit = assay.eq (builtins.match ".*:test.*" custom.scriptExec.pre-commit != null) true;
     customPrePush = assay.eq (builtins.match ".*:coverage.*" custom.scriptExec.pre-push != null) true;
   }
