@@ -1,0 +1,98 @@
+# IdClear monorepo Hermes template (no secrets).
+# Seeded into $PWD/.hermes/config.yaml when missing.
+# Default terminal backend: local (host shell via devenv TERMINAL_ENV=local).
+# Docker sandbox: set terminal.backend: docker or run `hermes-sandbox`.
+# API key: set CHEAPESTINFERENCE_API_KEY in $HERMES_HOME/.env (never commit).
+# Model IDs (must match your pool): kimi-k3, qwen3.8-max, glm-5.2, minimax-m3,
+#   deepseek-v4-flash, mimo-v2.5. Do not use provider=openrouter — it ignores base_url.
+# Skills: paths in external_dirs are relative to HERMES_HOME ($PWD/.hermes),
+#   so ../.cursor/skills → repo .cursor/skills (all Cursor skills + id-workflow).
+model:
+  default: glm-5.2
+  provider: cheapestinference
+  base_url: https://api.cheapestinference.com/v1
+  api_mode: chat_completions
+custom_providers:
+  - name: cheapestinference
+    base_url: https://api.cheapestinference.com/v1
+    key_env: CHEAPESTINFERENCE_API_KEY
+  - name: omniroute
+    base_url: http://127.0.0.1:20128/v1
+    key_env: OMNIROUTE_API_KEY
+terminal:
+  backend: local
+  cwd: .
+  timeout: 180
+  # Docker sandbox settings (used when backend: docker or TERMINAL_ENV=docker)
+  docker_image: nikolaik/python-nodejs:python3.11-nodejs20
+  docker_mount_cwd_to_workspace: true
+  docker_run_as_host_user: true
+  container_cpu: 2
+  container_memory: 4096
+  container_persistent: false
+skills:
+  external_dirs:
+    - ../.cursor/skills
+  template_vars: true
+compression:
+  enabled: true
+  threshold: 0.7
+  target_ratio: 0.2
+  protect_last_n: 20
+  protect_first_n: 3
+tool_loop_guardrails:
+  warnings_enabled: true
+  hard_stop_enabled: false
+  warn_after:
+    exact_failure: 2
+    same_tool_failure: 3
+    idempotent_no_progress: 2
+approvals:
+  mode: manual
+  timeout: 60
+  cron_mode: deny
+  mcp_reload_confirm: true
+  destructive_slash_confirm: true
+security:
+  allow_private_urls: false
+  redact_secrets: true
+  tirith_enabled: true
+  tirith_path: tirith
+  tirith_timeout: 5
+  tirith_fail_open: true
+memory:
+  memory_enabled: true
+  user_profile_enabled: true
+mcp_servers:
+  lean-ctx:
+    command: lean-ctx
+    args: []
+    enabled: true
+  roam-code:
+    command: roam
+    args:
+      - mcp
+    enabled: true
+  context7:
+    command: context7-mcp
+    args: []
+    enabled: true
+  serena:
+    command: serena
+    args:
+      - start-mcp-server
+    enabled: true
+  searxng:
+    command: npx
+    args:
+      - -y
+      - mcp-searxng
+    env:
+      SEARXNG_URL: http://127.0.0.1:4001
+    enabled: true
+  maestro:
+    command: maestro
+    args:
+      - mcp
+      - serve
+    enabled: true

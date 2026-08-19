@@ -4,8 +4,14 @@
   imports = [
     ./features/program-moon.nix
     ./features/program-roam-code.nix
+    ./features/program-roam-code-pypi.nix
     ./features/program-lean-ctx.nix
     ./features/program-assay.nix
+    ./features/program-maestro.nix
+    ./features/program-serena.nix
+    ./features/program-context7.nix
+    ./features/program-omniroute.nix
+    ./features/program-hermes.nix
 
     ./features/dotenv.nix
     ./features/packages-base.nix
