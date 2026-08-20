@@ -8,7 +8,6 @@
     ./features/program-lean-ctx.nix
     ./features/program-assay.nix
     ./features/program-maestro.nix
-    ./features/program-serena.nix
     ./features/program-context7.nix
     ./features/program-omniroute.nix
     ./features/program-hermes.nix

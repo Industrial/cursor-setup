@@ -186,18 +186,6 @@
 			],
 			"disabled": true,
 			"description": "Docker containers/logs/volumes (https://github.com/ckreiling/mcp-server-docker). Enable when debugging compose services."
-		},
-		"serena": {
-			"type": "stdio",
-			"command": "bash",
-			"args": [
-				"scripts/serena-mcp-wrapper.sh",
-				"--project-from-cwd",
-				"--log-level",
-				"WARNING"
-			],
-			"disabled": false,
-			"description": "Serena MCP (@oraios/serena); run devenv shell once so .devenv/state/venv exists"
 		}
 	}
 }

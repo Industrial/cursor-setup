@@ -77,11 +77,6 @@ mcp_servers:
     command: context7-mcp
     args: []
     enabled: true
-  serena:
-    command: serena
-    args:
-      - start-mcp-server
-    enabled: true
   searxng:
     command: npx
     args:
