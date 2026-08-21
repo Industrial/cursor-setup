@@ -17,6 +17,7 @@ let
     "packages-formatters"
     "packages-rust-dev"
     "program-assay"
+    "program-claude-code"
     "program-context7"
     "program-hermes"
     "program-lean-ctx"
@@ -30,7 +31,7 @@ let
 in
   assay.suite "default" {
     exposesAllFeatures = assay.eq (builtins.sort builtins.lessThan names) expected;
-    featureCount = assay.eq (builtins.length names) 21;
+    featureCount = assay.eq (builtins.length names) 22;
     idlePackagesEmpty = assay.eq idle.packages [];
     idleDotenvOff = assay.eq idle.dotenv.enable false;
     idleScriptsEmpty = assay.eq idle.scripts [];

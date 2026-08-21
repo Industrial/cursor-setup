@@ -1,0 +1,17 @@
+{
+  "version": "2.1.238",
+  "commit": "46283063a4c23f7afadb8440f549264ad93b7c06",
+  "buildDate": "2026-08-20T15:26:31Z",
+  "platforms": {
+    "linux-arm64": {
+      "binary": "claude",
+      "checksum": "28d736120a6b14c5eae1ad1470e73371818c9c2fa41e0b3c7040207aa2d4edee",
+      "size": 335993064
+    },
+    "linux-x64": {
+      "binary": "claude",
+      "checksum": "0933b286cf94e1b2504b35ac165ab76b8f822735d53371c56393988c23040d58",
+      "size": 338860336
+    }
+  }
+}

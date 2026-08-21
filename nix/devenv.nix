@@ -11,6 +11,7 @@
     ./features/program-context7.nix
     ./features/program-omniroute.nix
     ./features/program-hermes.nix
+    ./features/program-claude-code.nix
 
     ./features/dotenv.nix
     ./features/packages-base.nix
