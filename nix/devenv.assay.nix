@@ -7,5 +7,5 @@ let
 in
   assay.suite "devenv" {
     sameFeaturesAsDefault = assay.eq viaDevenv viaDefault;
-    featureCount = assay.eq (builtins.length viaDevenv) 22;
+    featureCount = assay.eq (builtins.length viaDevenv) 23;
   }

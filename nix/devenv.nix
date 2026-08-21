@@ -12,6 +12,7 @@
     ./features/program-omniroute.nix
     ./features/program-hermes.nix
     ./features/program-claude-code.nix
+    ./features/program-paperclip.nix
 
     ./features/dotenv.nix
     ./features/packages-base.nix
