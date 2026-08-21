@@ -35,6 +35,7 @@ in {
           pass_filenames = false;
           always_run = true;
           language = "system";
+          verbose = true;
         };
 
         pre-push = {
@@ -45,6 +46,7 @@ in {
           pass_filenames = false;
           always_run = true;
           language = "system";
+          verbose = true;
         };
       };
     };
