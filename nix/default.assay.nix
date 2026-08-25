@@ -24,6 +24,7 @@ let
     "program-maestro"
     "program-moon"
     "program-omniroute"
+    "program-paperclip"
     "program-roam-code"
     "program-roam-code-pypi"
   ];
@@ -31,7 +32,7 @@ let
 in
   assay.suite "default" {
     exposesAllFeatures = assay.eq (builtins.sort builtins.lessThan names) expected;
-    featureCount = assay.eq (builtins.length names) 22;
+    featureCount = assay.eq (builtins.length names) 23;
     idlePackagesEmpty = assay.eq idle.packages [];
     idleDotenvOff = assay.eq idle.dotenv.enable false;
     idleScriptsEmpty = assay.eq idle.scripts [];

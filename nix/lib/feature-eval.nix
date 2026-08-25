@@ -41,6 +41,13 @@
         type = anything;
         default = {};
       };
+      # Declared, not freeform: a feature that only ever sets `processes` via
+      # `mkIf` would otherwise make the freeform type resolve attribute names
+      # through `config`, which recurses back into the feature's own `cfg`.
+      processes = lib.mkOption {
+        type = anything;
+        default = {};
+      };
     };
   };
 
