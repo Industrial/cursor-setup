@@ -23,6 +23,11 @@ let
     cursor.features.program-paperclip.dataDir = "/tmp/pc-state";
     cursor.features.program-paperclip.postgres.enable = true;
   };
+  onAutoStart = h.evalModule ./program-paperclip.nix {
+    cursor.features.program-paperclip.enable = true;
+    cursor.features.program-paperclip.processEnable = true;
+    cursor.features.program-paperclip.autoStart = true;
+  };
   onCliOnlyPortable = h.evalModule ./program-paperclip.nix {
     cursor.features.program-paperclip.enable = true;
     cursor.features.program-paperclip.dataDir = "/tmp/pc-state";
@@ -46,6 +51,7 @@ in
     # the case that actually needs the quotes.
     processExternalDatabaseUrl = assay.eq (builtins.match "env DATABASE_URL=postgres://u@h:5432/pc PORT=3100 sh -c .*" ((onProcExternalDb.config.processes.paperclip or {}).exec or "") != null) true;
     processNotAutoStart = assay.eq (proc.start.enable or true) false;
+    processAutoStartOptIn = assay.eq ((onAutoStart.config.processes.paperclip or {}).start.enable or false) true;
     processReadyPort = assay.eq (proc.ready.http.get.port or 0) 3100;
     # Portable mode: state in the checkout, devenv Postgres instead of the
     # vendored embedded cluster, and databaseUrl derived from it.
