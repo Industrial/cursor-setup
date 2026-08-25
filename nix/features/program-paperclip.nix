@@ -1,8 +1,12 @@
 # Paperclip AI control plane — https://paperclipai.net/
 # Docs: https://docs.paperclip.ing/guides/getting-started/installation/
 #
-# CLI on PATH when enable=true. processEnable wires a devenv process for
-# `devenv up paperclip` (autoStart=false by default).
+# CLI on PATH when enable=true. processEnable registers a devenv process
+# (autoStart=false by default).
+#
+# Starting it: `devenv up` brings the process manager up but leaves this one
+# `not_started` because start.enable is false — naming it (`devenv up paperclip`)
+# does NOT override that. Use `devenv processes start paperclip`.
 #
 # Conflicts with a host systemd --user paperclipai.service on the same ports
 # (~/.paperclip, :3100, embedded Postgres :54329) — stop the host unit first.
@@ -44,6 +48,26 @@ in {
     description = "PAPERCLIP_INSTANCE_ID / --instance value.";
   };
 
+  options.cursor.features.program-paperclip.databaseUrl = lib.mkOption {
+    type = lib.types.str;
+    default = "";
+    description = ''
+      DATABASE_URL for the Paperclip process. Empty (the default) forces
+      embedded Postgres by shadowing any consumer-repo DATABASE_URL.
+
+      paperclipai bundles dotenv and loads `.env` from its working directory,
+      which for a devenv process is the consumer repo root. A repo that sets
+      DATABASE_URL for its own app therefore flips Paperclip out of
+      embedded-postgres mode without asking, and the server dies with
+      `database "<their db>" does not exist` — after `doctor` has already
+      reported every check green. dotenv will not overwrite a key that is
+      already present, so exporting an empty value wins over the file.
+
+      Set this to a real Postgres URL when the host cannot run the embedded
+      cluster (NixOS without `programs.nix-ld`).
+    '';
+  };
+
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
       packages = [paperclipai pkgs.bashInteractive pkgs.coreutils];
@@ -55,7 +79,10 @@ in {
       };
 
       processes.paperclip = {
-        exec = "paperclipai run --instance ${cfg.instanceId} --no-repair";
+        # DATABASE_URL is shadowed, not unset: `env -u` does not help because
+        # dotenv reads the consumer repo's `.env` file at runtime. See the
+        # databaseUrl option for the full story.
+        exec = "env DATABASE_URL=${lib.escapeShellArg cfg.databaseUrl} paperclipai run --instance ${cfg.instanceId} --no-repair";
         start.enable = cfg.autoStart;
         restart = {
           on = "on_failure";
