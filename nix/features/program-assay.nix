@@ -45,13 +45,13 @@ in {
     enable = lib.mkEnableOption "Assay CLI for Nix module unit tests";
     version = lib.mkOption {
       type = lib.types.str;
-      default = "0.1.0";
+      default = "0.2.1";
       description = "Assay version tag / release to pin";
     };
     releaseHash = lib.mkOption {
       type = lib.types.nullOr lib.types.str;
-      # sha256 of assay-x86_64-unknown-linux-gnu.tar.gz from github:Industrial/assay v0.1.0
-      default = "sha256-mj35QCJAbNpu4MtR/5FYEPUWZ1tLvKzgNMrullPuDrs=";
+      # sha256 of assay-x86_64-unknown-linux-gnu.tar.gz from github:Industrial/assay v0.2.1
+      default = "sha256-zaejB1zfDQ214UJizIq9ds33BLpD7SrwL+USZaR9LvY=";
       description = "SRI hash of the linux-gnu release tarball; null uses nix run wrapper";
     };
     dogfood = lib.mkEnableOption "assay-dogfood helper script" // {default = true;};
