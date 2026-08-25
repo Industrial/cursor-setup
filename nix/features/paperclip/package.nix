@@ -19,6 +19,6 @@ writeShellApplication {
       echo "paperclipai: do not run as root (embedded Postgres)" >&2
       exit 1
     fi
-    exec npx --yes paperclipai@2026.817.0 "$@"
+    exec npx --yes paperclipai@2026.824.1 "$@"
   '';
 }
