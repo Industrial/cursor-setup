@@ -32,6 +32,11 @@ let
     cursor.features.program-paperclip.enable = true;
     cursor.features.program-paperclip.dataDir = "/tmp/pc-state";
   };
+  onNoClaudePath = h.evalModule ./program-paperclip.nix {
+    cursor.features.program-paperclip.enable = true;
+    cursor.features.program-paperclip.processEnable = true;
+    cursor.features.program-paperclip.claudeCodeExecutable = "";
+  };
   has = name: names: builtins.elem name names;
   proc = onProc.config.processes.paperclip or {};
   portablePg = onPortable.config.services.postgres or {};
@@ -69,6 +74,17 @@ in
     # The listener and the readiness probe must come from one option, or a `-y`
     # onboard picks its own port (3001) and the probe polls nothing.
     processPortMatchesProbe = assay.eq (builtins.match ".*PORT=${toString (proc.ready.http.get.port or 0)} .*" (proc.exec or "") != null) true;
+    # claude_local otherwise runs the generic-linux binary vendored by
+    # @anthropic-ai/claude-agent-sdk, which cannot exec on NixOS: every run dies
+    # at session/new as `acpx_session_init_failed`, while the adapter's own
+    # "Test now" probe still reports the environment healthy.
+    processResolvesClaudeExecutable = assay.eq (builtins.match ".*CLAUDE_CODE_EXECUTABLE=.*command -v claude.*" (proc.exec or "") != null) true;
+    # Resolution happens before the bootstrap, so the very first run of a fresh
+    # clone already has it.
+    processResolvesClaudeBeforeBootstrap = assay.eq (builtins.match ".*CLAUDE_CODE_EXECUTABLE.*paperclipai onboard.*" (proc.exec or "") != null) true;
+    # A miss must leave the variable unset rather than exporting an empty path.
+    processExportsClaudeOnlyWhenFound = assay.eq (builtins.match ".*then export CLAUDE_CODE_EXECUTABLE; fi.*" (proc.exec or "") != null) true;
+    processClaudeExecutableOptOut = assay.eq (builtins.match ".*CLAUDE_CODE_EXECUTABLE.*" ((onNoClaudePath.config.processes.paperclip or {}).exec or "") != null) false;
     processEnvInstance = assay.eq onProc.config.env.PAPERCLIP_INSTANCE_ID "default";
     processEnvManaged = assay.eq onProc.config.env.PAPERCLIP_SERVICE_MANAGED "1";
   }

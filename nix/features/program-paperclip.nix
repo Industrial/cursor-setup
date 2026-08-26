@@ -29,9 +29,20 @@
   # in. Onboard once, non-interactively, then hand over to `run`.
   paperclipHome = "\${PAPERCLIP_HOME:-$HOME/.paperclip}";
   bootstrapAndRun =
-    "[ -f ${paperclipHome}/instances/${cfg.instanceId}/config.json ] "
+    resolveClaudeCode
+    + "[ -f ${paperclipHome}/instances/${cfg.instanceId}/config.json ] "
     + "|| paperclipai onboard -y --no-install-service; "
     + "exec paperclipai run --instance ${cfg.instanceId} --no-repair";
+
+  # Resolved at process start rather than at eval time: nixpkgs' claude-code is
+  # unfree, and referencing it here would force allowUnfree on every consumer of
+  # this feature (and on the assay suite). `command -v` accepts both a bare name
+  # and an absolute path, and a miss leaves the variable unset so the adapter
+  # falls back to its vendored binary exactly as it did before.
+  resolveClaudeCode =
+    lib.optionalString (cfg.claudeCodeExecutable != "")
+    ("CLAUDE_CODE_EXECUTABLE=\"$(command -v ${lib.escapeShellArg cfg.claudeCodeExecutable} || true)\"; "
+      + "if [ -n \"$CLAUDE_CODE_EXECUTABLE\" ]; then export CLAUDE_CODE_EXECUTABLE; fi; ");
 in {
   options.cursor.features.program-paperclip.enable =
     lib.mkEnableOption "Paperclip AI control plane CLI (paperclipai via npx pin)";
@@ -133,6 +144,40 @@ in {
 
       Set this to a real Postgres URL when the host cannot run the embedded
       cluster (NixOS without `programs.nix-ld`).
+    '';
+  };
+
+  options.cursor.features.program-paperclip.claudeCodeExecutable = lib.mkOption {
+    type = lib.types.str;
+    default = "claude";
+    description = ''
+      Command or path resolved into CLAUDE_CODE_EXECUTABLE for the Paperclip
+      process — the Claude Code binary the `claude_local` adapter runs.
+
+      Resolved with `command -v` when the process starts, so a bare name picks
+      up whatever is on PATH and a miss simply leaves the variable unset. It is
+      deliberately not `lib.getExe pkgs.claude-code`: that package is unfree, so
+      referencing it would force `allowUnfree` on every consumer of this feature.
+
+      Paperclip drives Claude through @agentclientprotocol/claude-agent-acp,
+      which resolves the CLI as
+      `process.env.CLAUDE_CODE_EXECUTABLE ?? claudeCliPath()`. That fallback is
+      a prebuilt generic-linux binary vendored as an optional dependency of
+      @anthropic-ai/claude-agent-sdk, and on NixOS it cannot exec — every run
+      dies at `session/new` with
+
+      ```
+      Claude Code process exited with code 127. stderr: Could not start
+      dynamically linked executable: .../claude-agent-sdk-linux-x64/claude
+      ```
+
+      which Paperclip surfaces only as `acpx_session_init_failed: Internal
+      error`. The adapter's own "Test now" environment probe passes regardless,
+      so the instance looks healthy right up until the first real run. Same
+      class of problem as the vendored embedded-postgres binaries, and the same
+      fix: use the nixpkgs build.
+
+      Set to `""` to leave the variable unset and take the vendored binary.
     '';
   };
 
