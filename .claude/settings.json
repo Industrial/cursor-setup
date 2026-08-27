@@ -16,13 +16,13 @@
     },
     "gitkraken": {
       "source": {
-        "path": "/home/tom/.claude/plugins/marketplaces/gitkraken",
+        "path": "./.claude/plugins/marketplaces/gitkraken",
         "source": "directory"
       }
     },
     "idclear": {
       "source": {
-        "path": "/home/tom/.claude/harness",
+        "path": "./.claude/harness",
         "source": "directory"
       }
     }
@@ -32,7 +32,7 @@
       {
         "hooks": [
           {
-            "command": "/nix/store/zh33b0yfy11f03l75kp6q64h3ws56nlq-lean-ctx-3.9.18/bin/lean-ctx hook observe",
+            "command": "./.devenv/profile/bin/lean-ctx hook observe",
             "type": "command"
           }
         ],
@@ -41,7 +41,7 @@
       {
         "hooks": [
           {
-            "command": "/nix/store/kacwmr4ld12379abapx8sirlpn766v19-lean-ctx-3.9.18/bin/lean-ctx hook read-dedup",
+            "command": "./.devenv/profile/bin/lean-ctx hook read-dedup",
             "type": "command"
           }
         ],
@@ -52,7 +52,7 @@
       {
         "hooks": [
           {
-            "command": "/nix/store/zh33b0yfy11f03l75kp6q64h3ws56nlq-lean-ctx-3.9.18/bin/lean-ctx hook observe",
+            "command": "./.devenv/profile/bin/lean-ctx hook observe",
             "type": "command"
           }
         ],
@@ -63,7 +63,7 @@
       {
         "hooks": [
           {
-            "command": "/nix/store/kacwmr4ld12379abapx8sirlpn766v19-lean-ctx-3.9.18/bin/lean-ctx hook rewrite",
+            "command": "./.devenv/profile/bin/lean-ctx hook rewrite",
             "type": "command"
           }
         ],
@@ -72,7 +72,7 @@
       {
         "hooks": [
           {
-            "command": "/nix/store/kacwmr4ld12379abapx8sirlpn766v19-lean-ctx-3.9.18/bin/lean-ctx hook redirect",
+            "command": "./.devenv/profile/bin/lean-ctx hook redirect",
             "type": "command"
           }
         ],
@@ -83,7 +83,7 @@
       {
         "hooks": [
           {
-            "command": "/nix/store/zh33b0yfy11f03l75kp6q64h3ws56nlq-lean-ctx-3.9.18/bin/lean-ctx hook observe",
+            "command": "./.devenv/profile/bin/lean-ctx hook observe",
             "type": "command"
           }
         ],
@@ -94,7 +94,7 @@
       {
         "hooks": [
           {
-            "command": "/nix/store/zh33b0yfy11f03l75kp6q64h3ws56nlq-lean-ctx-3.9.18/bin/lean-ctx hook observe",
+            "command": "./.devenv/profile/bin/lean-ctx hook observe",
             "type": "command"
           }
         ],
@@ -105,7 +105,7 @@
       {
         "hooks": [
           {
-            "command": "/nix/store/zh33b0yfy11f03l75kp6q64h3ws56nlq-lean-ctx-3.9.18/bin/lean-ctx hook observe",
+            "command": "./.devenv/profile/bin/lean-ctx hook observe",
             "type": "command"
           }
         ],
@@ -116,7 +116,7 @@
       {
         "hooks": [
           {
-            "command": "/nix/store/zh33b0yfy11f03l75kp6q64h3ws56nlq-lean-ctx-3.9.18/bin/lean-ctx hook observe",
+            "command": "./.devenv/profile/bin/lean-ctx hook observe",
             "type": "command"
           }
         ],
@@ -153,7 +153,8 @@
       "mcp__searxng__searxng_web_search",
       "mcp__searxng__web_url_read",
       "mcp__context7__resolve-library-id",
-      "mcp__context7__query-docs"
+      "mcp__context7__query-docs",
+      "Skill(mcp-debug)"
     ],
     "deny": [
       "Read(./.env)",
@@ -163,14 +164,14 @@
       "Read(./.hermes/auth.json)",
       "Read(./**/*.pem)",
       "Read(./**/id_rsa*)",
-      "Read(//home/tom/.claude/.credentials.json)",
+      "Read(**/.credentials.json)",
       "Grep",
       "Glob"
     ]
   },
   "skipDangerousModePermissionPrompt": true,
   "statusLine": {
-    "command": "$HOME/.claude/harness/plugins/id-workflow/statusline.sh",
+    "command": "./.claude/harness/plugins/id-workflow/statusline.sh",
     "padding": 0,
     "type": "command"
   },
