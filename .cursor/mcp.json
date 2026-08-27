@@ -27,7 +27,8 @@
     "playwright": {
       "command": "bunx",
       "args": ["@playwright/mcp@latest"],
-      "disabled": true
+      "disabled": false,
+      "description": "Playwright browser automation (https://github.com/microsoft/playwright-mcp). Enables screenshots, form filling, clicking, and E2E testing."
     },
     "github": {
       "command": "docker",

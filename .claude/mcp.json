@@ -22,6 +22,10 @@
     "maestro": {
       "command": "maestro",
       "args": ["mcp", "serve"]
+    },
+    "playwright": {
+      "command": "bunx",
+      "args": ["@playwright/mcp@latest"]
     }
   }
 }
