@@ -1,0 +1,27 @@
+{
+  "mcpServers": {
+    "lean-ctx": {
+      "command": "./.devenv/profile/bin/lean-ctx",
+      "args": []
+    },
+    "roam-code": {
+      "command": "./.devenv/profile/bin/roam",
+      "args": ["mcp"]
+    },
+    "context7": {
+      "command": "./.devenv/profile/bin/context7-mcp",
+      "args": []
+    },
+    "searxng": {
+      "command": "./.devenv/profile/bin/mcp-searxng",
+      "args": [],
+      "env": {
+        "SEARXNG_URL": "http://localhost:4001"
+      }
+    },
+    "maestro": {
+      "command": "./.devenv/profile/bin/maestro",
+      "args": ["mcp", "serve"]
+    }
+  }
+}
