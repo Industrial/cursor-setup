@@ -38,8 +38,8 @@
 # generic Playwright guidance, design taste. Those were deleted in full — the
 # roster is for things the model cannot derive, not lessons it does not need.
 #
-#   bash .claude/harness/plugins/id-workflow/hooks/sync-skills.sh          apply
-#   bash .claude/harness/plugins/id-workflow/hooks/sync-skills.sh --check  verify
+#   bash .claude/bin/sync-skills.sh          apply
+#   bash .claude/bin/sync-skills.sh --check  verify
 
 # --- workflow rails ---------------------------------------------------------
 id-workflow

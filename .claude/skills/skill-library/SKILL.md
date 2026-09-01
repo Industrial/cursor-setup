@@ -15,8 +15,8 @@ skill keeps its description. They are otherwise ordinary skills: real directorie
 content, no fetching. Read the path given for the one you need.
 
 To put one on the roster permanently, add its name to `~/.claude/skills.manifest` and
-re-run `sync-skills.sh`. It moves between the two directories; nothing is copied, so the
-two tiers cannot drift.
+re-run `.claude/bin/sync-skills.sh`. It moves a skill between the two directories;
+nothing is copied, so the two tiers cannot drift.
 
 | Skill | Description |
 |---|---|

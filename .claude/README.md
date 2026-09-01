@@ -22,15 +22,19 @@ harness/
     hooks/*.sh                     guards, mode state, formatter, verification gate
     agents/id-*.md                 the five tool-scoped subagents
     statusline.sh
+bin/sync-skills.sh                 reconciles skills/ against the manifest
 settings.json                      permissions, statusline, and the plugin declaration
 mcp.json                           the four nix-backed MCP servers
-commands/                          /id and friends — real files, 17 of them
+commands/                          /id and friends — real files, 16 of them
 skills/                            tier 1 — the session roster
 skill-library/                     tier 2 — everything else, indexed
 skills.manifest                    which skills are tier 1
 ```
 
-One level up, in the feature itself:
+`bin/` here is payload-level and travels with the payload, because `sync-skills.sh` operates on
+the payload and resolves it from its own location — it has to still work through the `~/.claude`
+symlink. Do not confuse it with the feature-level `bin/` one level up, which builds and verifies
+the payload from outside:
 
 ```
 bin/link-files-nixos   makes ~/.claude point here
@@ -39,6 +43,9 @@ bin/check-payload      the invariant suite — run it before the switch
 collisions.tsv         which copy wins when two sources share a skill name
 renames.tsv            source directories whose basename is a bad skill name
 ```
+
+`check-payload` is referenced here and by `skills.manifest` but does not exist in this payload;
+nothing currently enforces the roster budget automatically.
 
 `settings.json` carries no hooks at all; `extraKnownMarketplaces` and `enabledPlugins` declare
 the plugin instead. Claude Code does **not** auto-install a declared plugin
@@ -72,7 +79,6 @@ pack itself, unforked, from `.cursor/commands/id-workflow/`.
 | `session-id-context.sh` | SessionStart | Re-injects mode/lane/task after resume or compaction | — |
 | `format-after-edit.sh` | PostToolUse | Formats what was just edited | — |
 | `stop-verify-gate.sh` | Stop | Refuses to end a turn on code that does not lint or typecheck | `CLAUDE_SKIP_STOP_GATE=1` |
-| `sync-skills.sh` | — | Reconciles `.claude/skills/` against the manifest: `bash plugins/id-workflow/hooks/sync-skills.sh` | — |
 | `test-hooks.sh` | — | The suite for all of the above: `bash plugins/id-workflow/hooks/test-hooks.sh` | — |
 
 Every hook above except one is restrictive — it denies a write, blocks a tool, confines a path.
@@ -174,8 +180,8 @@ A skill lives in exactly one tier. Promotion and demotion are `mv`, never `cp` �
 would drift and the drift would be invisible.
 
 ```
-bash harness/plugins/id-workflow/hooks/sync-skills.sh           apply the manifest
-bash harness/plugins/id-workflow/hooks/sync-skills.sh --check   fail if the roster has drifted
+bash bin/sync-skills.sh           apply the manifest
+bash bin/sync-skills.sh --check   fail if the roster has drifted
 ```
 
 Anything new defaults to the library, which is the safe direction: a skill that should load in

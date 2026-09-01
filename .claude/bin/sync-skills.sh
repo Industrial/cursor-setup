@@ -2,8 +2,15 @@
 # Reconcile .claude/skills/ against .claude/skills.manifest, and index everything
 # the manifest leaves out into the `skill-library` skill.
 #
-#   bash sync-skills.sh           apply
-#   bash sync-skills.sh --check   exit 1 if out of sync (CI)
+#   bash .claude/bin/sync-skills.sh           apply
+#   bash .claude/bin/sync-skills.sh --check   exit 1 if out of sync (CI)
+#
+# This is payload maintenance, not an ID rail, which is why it lives in bin/
+# rather than in the id-workflow plugin's hooks/. It is not wired into
+# hooks.json and never was. Shipping it inside the plugin is how a stale,
+# symlink-era copy ended up installed at plugins/id-workflow/hooks/ in a
+# consuming repo and wired into ./init.sh, where it would have rm -rf'd real
+# skill directories and replaced them with symlinks. Keep it out of the plugin.
 #
 # The problem this solves: skills are cheap individually and expensive in bulk.
 # Claude Code loads every skill's name and description at session start, and at
@@ -30,8 +37,8 @@
 set -uo pipefail
 
 here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# hooks/ -> id-workflow/ -> plugins/ -> harness/ -> .claude/
-payload="$(cd "$here/../../../.." && pwd)"
+# bin/ -> .claude/
+payload="$(cd "$here/.." && pwd)"
 
 manifest="$payload/skills.manifest"
 roster="$payload/skills"
@@ -131,8 +138,8 @@ generated="$(mktemp)"
     echo "content, no fetching. Read the path given for the one you need."
     echo
     echo "To put one on the roster permanently, add its name to \`~/.claude/skills.manifest\` and"
-    echo "re-run \`sync-skills.sh\`. It moves between the two directories; nothing is copied, so the"
-    echo "two tiers cannot drift."
+    echo "re-run \`.claude/bin/sync-skills.sh\`. It moves a skill between the two directories;"
+    echo "nothing is copied, so the two tiers cannot drift."
     echo
     echo "| Skill | Description |"
     echo "|---|---|"
