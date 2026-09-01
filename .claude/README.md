@@ -134,31 +134,41 @@ file-writes into the repo.
 
 ## Commands
 
-`commands/` holds all 17 entrypoints as real files — the seven `/id*` ones plus the escape
+`commands/` holds all 16 entrypoints as real files — the seven `/id*` ones plus the escape
 hatches (`/quality`, `/skills`, `/agent`, `/debate`, `/plan-hierarchically`, `/pre-push`,
-`/activate`, `/mcp-debug`, `/new-skill`, `/portfolio-loop`). They used to be symlinks into
+`/activate`, `/mcp-debug`, `/new-skill`). They used to be symlinks into
 `.cursor/commands/`; see **Vendoring** below for why they are not any more.
 
 ## Skills
 
-Every skill is here as real content — 262 of them, vendored from four sources. None of them are
+Every skill is here as real content — 229 of them, vendored from four sources. None of them are
 symlinks and none of them need `.cursor/` or `.hermes/` to be present.
 
 They sit in two tiers, because Claude Code loads every skill's name and description at session
-start and the roster is finite. At 210 entries it overflowed: roughly 150 arrived as bare slugs
-with the description dropped, which cost a line each and bought nothing — a skill whose
-description never reaches the model cannot be auto-invoked.
+start and the roster is finite.
 
-- **Tier 1** — `skills/`, named in `skills.manifest`, on the roster, auto-invocable. 81 entries;
-  the ceiling is 90 and `check-payload` enforces it.
-- **Tier 2** — `skill-library/`, the other 182. Real directories, full content, simply not
+**The budget is characters, not entries.** The roster is a concatenation of every name and
+description, and it is *truncated*, not trimmed entry-by-entry: it stops mid-word and everything
+after the cut arrives as a bare slug. Measured at 81 entries / 26,629 chars, the cut landed
+around position 73 — `scrutinize` (505 ch) and `system-design` (700 ch) arrived bare while `tdd`
+at position 78 survived on a 75-char description. The ceiling sits near 21,000 chars. An earlier
+note here claimed a 90-*entry* ceiling enforced by `check-payload`; both were wrong — that script
+has never existed in this payload, and 90 short descriptions fit where 81 long ones did not.
+
+- **Tier 1** — `skills/`, named in `skills.manifest`, on the roster, auto-invocable. 48 entries
+  totalling 12,446 description chars, roughly 3.5k tokens. Target under ~18,000 chars for margin.
+- **Tier 2** — `skill-library/`, the other 181. Real directories, full content, simply not
   announced at session start. The generated `skills/skill-library/SKILL.md` indexes them by
   name, description and path, so one costs nothing until it is invoked and then hands over the
   exact file to read.
+- **Deleted** — 33 skills that taught general software craft the model already performs natively:
+  commit conventions, rebase and merge resolution, ADR format, clean/hexagonal architecture, DDD
+  theory, generic React and Playwright guidance, design taste. Archiving them would have been
+  free, but they were noise in the library too. See `skills.manifest` for the bar.
 
 The index lives in `skills/` rather than beside the content it indexes, and that is not
 cosmetic: Claude Code only scans `skills/*/SKILL.md`, so an index parked in `skill-library/`
-would never load and tier 2 would be 182 directories nothing could find.
+would never load and tier 2 would be 181 directories nothing could find.
 
 A skill lives in exactly one tier. Promotion and demotion are `mv`, never `cp` — two copies
 would drift and the drift would be invisible.
@@ -191,13 +201,13 @@ Two smaller consequences:
   Vendoring captured them at a point in time; they will go stale when maestro updates. Re-run
   `bin/vendor-skills` after upgrading it.
 - Some vendored skill bodies reference `.cursor/...` paths internally. Those references were not
-  rewritten — 262 skill bodies is a separate job — so a skill may occasionally point at a path
-  that does not exist in the current project.
-- **24 `SKILL.md` files sit nested inside other skills**, and that is deliberate. `playwright-skill`
-  and `id-effect` are collections whose bodies link their parts by relative path
-  (`pom/page-object-model.md`, `id_effect-fundamentals/SKILL.md`), so the parts have to travel
-  with the parent. Those same parts are also vendored as top-level skills — `playwright-pom`,
-  `id-effect-fundamentals` — so they are findable by name. The content therefore exists twice.
+  rewritten — 229 skill bodies is a separate job — so a skill may occasionally point at a path
+  that does not exist in the current project. The `.cursor/skills/...` paths some bodies cite are
+  already dead: skills live at `.cursor/.claude/skills/`, and `.cursor/skills/` does not exist.
+- **Nested `SKILL.md` files sit inside other skills**, and that is deliberate. `id-effect` is a
+  collection whose body links its parts by relative path (`id_effect-fundamentals/SKILL.md`), so
+  the parts have to travel with the parent. Those same parts are also vendored as top-level
+  skills — `id-effect-fundamentals` — so they are findable by name. The content exists twice.
   Claude Code only scans one level deep, so the nested copies never reach the roster, and
   `bin/vendor-skills` rewrites both from the one source on every run. Editing the payload by hand
   is what would make them diverge — edit the source and re-vendor instead.

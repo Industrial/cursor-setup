@@ -1,31 +1,42 @@
 # Which skills get a directory in .claude/skills/ — and therefore a slot in every
 # session's start-up roster.
 #
-# Everything NOT listed here is still fully present, as real content, in
-# .claude/skill-library/. The `skill-library` skill indexes it by name,
-# description and path, so an archived skill costs nothing until it is invoked
-# and then hands over the exact file to read. Nothing is deleted and nothing is
-# unreachable; the only thing this file decides is whether Claude pays for a
-# skill's description at session start or on demand.
+# Everything NOT listed here is either in .claude/skill-library/ (tier 2, indexed
+# on demand by the `skill-library` skill) or deleted outright. Deletion is for
+# skills that teach general craft the model already has; archiving is for
+# specialist content that is real but rarely needed.
 #
-# Why prune at all: at 210 entries the roster overflowed and roughly 150 skills
-# were listed by name with the description silently dropped. A skill whose
-# description never reaches the model cannot be auto-invoked — it costs a line
-# and buys nothing. There are 262 skills now, so the tier split is not optional.
-# 70 entries is proven to render intact; this file holds 81, which is why the
-# budget in bin/check-payload is 90 rather than "as many as fit".
+# THE BUDGET IS CHARACTERS, NOT ENTRIES.
 #
-# The bar — replacing the old "would this repo's TypeScript stack trigger it?",
-# which was wrong for a system-wide setup:
+# Claude Code concatenates every skill's name and description into the session
+# roster and truncates that string when it overflows — it does not drop whole
+# entries, it stops mid-word, and every entry after the cut arrives as a bare
+# slug. A skill whose description never reaches the model cannot be
+# auto-invoked, so it costs a line and buys nothing.
 #
-#   1. the workflow rails — ID, Maestro, review and commit craft
-#   2. the languages actually in use on this machine — Rust, Python, Nix, TS
-#   3. trading and quant work
-#   4. testing, debugging and design craft
-#   5. anything a .claude/commands/*.md invokes by name
+# This was measured, not guessed. With 81 entries totalling 26,629 chars the
+# roster truncated around position 73 of 81: `scrutinize` (505 ch),
+# `system-design` (700 ch) and six others arrived bare, while `tdd` at position
+# 78 survived purely because its description was 75 chars and still fit. That is
+# a greedy byte-fill hitting a ceiling, which sits somewhere near 21,000 chars.
 #
-# Archiving is the default for anything new. A skill that should auto-invoke has
-# to be argued for here.
+# So "90 entries" was the wrong control variable — a roster of 90 short
+# descriptions fits comfortably while 81 long ones did not. Budget the sum of
+# description lengths and keep it under ~18,000 chars for margin.
+#
+# The bar for tier 1:
+#
+#   1. facts about THIS repo, machine or fleet that cannot be inferred
+#   2. version-specific API surface that is easy to misremember
+#      (Effect, MikroORM v7, Next 16, Logto)
+#   3. the workflow rails — ID, Maestro, tooling contracts
+#   4. anything a .claude/commands/*.md invokes by name
+#
+# What does NOT belong, at any description length: general software craft the
+# model performs natively. Commit conventions, rebasing, merge resolution, ADR
+# format, clean/hexagonal architecture, DDD theory, generic React guidance,
+# generic Playwright guidance, design taste. Those were deleted in full — the
+# roster is for things the model cannot derive, not lessons it does not need.
 #
 #   bash .claude/harness/plugins/id-workflow/hooks/sync-skills.sh          apply
 #   bash .claude/harness/plugins/id-workflow/hooks/sync-skills.sh --check  verify
@@ -40,19 +51,9 @@ activate-tooling
 maestro
 new-skill
 skill-library
-scrutinize
-debug-mantra
-post-mortem
-tdd
-writing-commit-messages
-pr-lifecycle
-rebase
-merge-conflicts
-submodule-sync
 pre-push-ci
 improve-test-coverage
 definitively-programs
-mcp-debug
 mcp-tool-selection
 lean-ctx
 hermes-tool-routing-hooks
@@ -73,24 +74,12 @@ idclear-git-hooks-config
 
 # --- rust -------------------------------------------------------------------
 rust-devenv
-rust-compilation-fixes
 rust-assay-compilation-fixes
 rust-benchmark-ci
 fleet-rust-tooling
 
 # --- trading and research ---------------------------------------------------
-strategy-portfolio-loop
 andromeda-development
-scientific-method
-
-# --- software architecture --------------------------------------------------
-architecture-decision-records
-domain-modeling
-ubiquitous-language
-domain-driven-design
-hexagonal-architecture
-clean-architecture
-system-design
 
 # --- typescript, effect, web ------------------------------------------------
 effect.ts-fundamentals
@@ -108,19 +97,6 @@ logto-management-api
 nextjs16-skills
 next-best-practices
 next-cache-components
-react
-react-best-practices
-react-query
-composition-patterns
 
-# --- testing and frontend craft ---------------------------------------------
-playwright-skill
-playwright-cli
-playwright-e2e-testing
-playwright-regression-testing
-frontend-testing
-frontend-design
-impeccable
-baseline-ui
-ui-design
+# --- this repo --------------------------------------------------------------
 idclear-e2e-suite

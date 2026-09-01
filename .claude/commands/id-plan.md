@@ -35,7 +35,7 @@ Run `maestro plan check` once a task id exists.
 - [ ] Plan grounded in real paths
 - [ ] Leaves carry AC + gates
 - [ ] Maestro artifacts exist (normal / heavy)
-- [ ] Self-reviewed with `scrutinize`
+- [ ] Self-reviewed: intent questioned, leaf paths traced, AC falsifiable
 - [ ] **User explicitly approved**
 
 Present the plan and **stop**. Do not advance to `/id-execute` yourself unless the user asked for

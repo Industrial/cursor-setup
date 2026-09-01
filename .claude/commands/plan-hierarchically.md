@@ -18,8 +18,6 @@ When invoked with `/skills`, review `.cursor/skills/` and load **all** of these 
 | `~/.claude/skills/maestro-task/SKILL.md` | Task claim/verify/ship loop, `task split` |
 | `~/.claude/skills/maestro-verify/SKILL.md` | Witness levels, verdict routing, plan-check |
 | `~/.claude/skills/maestro-handoff/SKILL.md` | Inbox check, `to_agent`, pickup protocol |
-| `.cursor/skills/engineering/scrutinize/SKILL.md` | Self-review the plan before presenting |
-| `.cursor/skills/science/scientific-method/SKILL.md` | Trade-off / optimization decisions in the plan |
 
 Also use MCP servers in parallel during reconnaissance:
 
@@ -264,7 +262,7 @@ maestro_evidence_record { taskId: "tsk-...", note: "plan-check PASS: <summary>" 
 
 ## Phase 6 — Self-review before presenting
 
-Load `scrutinize` skill on the draft plan:
+Review the draft plan as an outsider would:
 
 1. **Intent** — simpler alternative?
 2. **Trace** — each leaf's file paths exist?
@@ -518,8 +516,6 @@ Reject your draft if any fail:
 |----------|--------|
 | `/skills` | List all skills reviewed (table above) before continuing |
 | `/quality` | Re-read request + this command; sharpen AC, scope, diagrams, gates; re-run plan-check |
-| `/scientific-method` | For optimization/trade-off leaves: observations, ranked hypotheses, falsification-first experiments in the plan |
-| `/scrutinize` | Outsider review of the plan before presenting |
 | `/id` / `/id-plan` | Prefer ID Workflow PLAN mode; this file remains the PLAN body |
 
 `<id-pack>` is `.cursor/commands/id-workflow/` in a project that has the shared pack, and `~/.claude/id-workflow/` otherwise — the payload carries a copy so the rails still resolve in a project with no `.cursor/` checkout.

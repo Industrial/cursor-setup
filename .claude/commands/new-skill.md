@@ -182,7 +182,7 @@ disable-model-invocation: true
 ---
 ```
 
-Omit `disable-model-invocation` only when the skill should auto-load from ambient context (rare; match `react-best-practices` / `composition-patterns` only if truly universal).
+Omit `disable-model-invocation` only when the skill should auto-load from ambient context (rare; it must earn a slot against the roster's character budget — see `skills.manifest`).
 
 Optional metadata (match repo conventions when relevant):
 
