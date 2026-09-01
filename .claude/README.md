@@ -22,19 +22,14 @@ harness/
     hooks/*.sh                     guards, mode state, formatter, verification gate
     agents/id-*.md                 the five tool-scoped subagents
     statusline.sh
-bin/sync-skills.sh                 reconciles skills/ against the manifest
-settings.json                      permissions, statusline, and the plugin declaration
+settings.json                      permissions, statusline, plugin declaration, skillOverrides
 mcp.json                           the four nix-backed MCP servers
 commands/                          /id and friends — real files, 16 of them
-skills/                            tier 1 — the session roster
-skill-library/                     tier 2 — everything else, indexed
-skills.manifest                    which skills are tier 1
+skills/                            every skill, one tree, 229 of them
+skills.manifest                    which of them carry a description in the roster
 ```
 
-`bin/` here is payload-level and travels with the payload, because `sync-skills.sh` operates on
-the payload and resolves it from its own location — it has to still work through the `~/.claude`
-symlink. Do not confuse it with the feature-level `bin/` one level up, which builds and verifies
-the payload from outside:
+One level up, in the feature itself:
 
 ```
 bin/link-files-nixos   makes ~/.claude point here
@@ -147,11 +142,15 @@ hatches (`/quality`, `/skills`, `/agent`, `/debate`, `/plan-hierarchically`, `/p
 
 ## Skills
 
-Every skill is here as real content — 229 of them, vendored from four sources. None of them are
-symlinks and none of them need `.cursor/` or `.hermes/` to be present.
+Every skill is here as real content — 229 of them in **one tree**, `skills/`, vendored from four
+sources. None are symlinks and none need `.cursor/` or `.hermes/` to be present.
 
-They sit in two tiers, because Claude Code loads every skill's name and description at session
-start and the roster is finite.
+Nothing moves. There is no `skill-library/` directory and no sync script. Both existed to
+reconcile `.cursor/skills` and `.hermes/skills` into a roster; those source trees are gone, so
+the machinery that merged them went too.
+
+What is still rationed is the **roster**: Claude Code loads every listed skill's name and
+description at session start, and that listing is finite.
 
 **The budget is characters, not entries.** The roster is a concatenation of every name and
 description, and it is *truncated*, not trimmed entry-by-entry: it stops mid-word and everything
@@ -161,31 +160,29 @@ at position 78 survived on a 75-char description. The ceiling sits near 21,000 c
 note here claimed a 90-*entry* ceiling enforced by `check-payload`; both were wrong — that script
 has never existed in this payload, and 90 short descriptions fit where 81 long ones did not.
 
-- **Tier 1** — `skills/`, named in `skills.manifest`, on the roster, auto-invocable. 48 entries
-  totalling 12,446 description chars, roughly 3.5k tokens. Target under ~18,000 chars for margin.
-- **Tier 2** — `skill-library/`, the other 181. Real directories, full content, simply not
-  announced at session start. The generated `skills/skill-library/SKILL.md` indexes them by
-  name, description and path, so one costs nothing until it is invoked and then hands over the
-  exact file to read.
+Membership is a **flag, not a location**:
+
+- **On the roster** — named in `skills.manifest`. Description loaded at session start,
+  auto-invocable. 48 entries.
+- **Off the roster** — `"user-invocable-only"` in `settings.json` under `skillOverrides`. Still
+  installed, still `/name`-invocable, still readable by path; it simply does not spend roster
+  budget. 181 entries. The `skill-library` skill explains how to search the tree.
 - **Deleted** — 33 skills that taught general software craft the model already performs natively:
   commit conventions, rebase and merge resolution, ADR format, clean/hexagonal architecture, DDD
-  theory, generic React and Playwright guidance, design taste. Archiving them would have been
-  free, but they were noise in the library too. See `skills.manifest` for the bar.
+  theory, generic React and Playwright guidance, design taste. See `skills.manifest` for the bar.
 
-The index lives in `skills/` rather than beside the content it indexes, and that is not
-cosmetic: Claude Code only scans `skills/*/SKILL.md`, so an index parked in `skill-library/`
-would never load and tier 2 would be 181 directories nothing could find.
+**Identity is the directory name, not the frontmatter `name:`.** 28 skills disagree between the
+two — `dev-caches-cleanup` declares `linux-dev-caches-cleanup`, the `id-effect-*` family declares
+`id_effect-*`. Key both `skills.manifest` and `skillOverrides` on the directory name, or the
+override silently fails to match and the skill quietly keeps its roster slot.
 
-A skill lives in exactly one tier. Promotion and demotion are `mv`, never `cp` — two copies
-would drift and the drift would be invisible.
+Promote by adding the directory name to `skills.manifest` and deleting its `skillOverrides`
+entry; demote by the reverse. Both files, every time — that pairing is the only invariant, and
+nothing on disk changes either way.
 
-```
-bash bin/sync-skills.sh           apply the manifest
-bash bin/sync-skills.sh --check   fail if the roster has drifted
-```
-
-Anything new defaults to the library, which is the safe direction: a skill that should load in
-every session has to be argued for in the manifest.
+`skills/skill-library/SKILL.md` deliberately carries **no generated list**. An embedded index
+goes stale the moment a skill is added or renamed, and there is no longer a script to rebuild it;
+it teaches reading the tree instead, which is always correct.
 
 ## Vendoring, and the fork it creates
 

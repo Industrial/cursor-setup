@@ -1,30 +1,43 @@
-# Which skills get a directory in .claude/skills/ — and therefore a slot in every
-# session's start-up roster.
+# Which skills carry a description in the session roster — and are therefore
+# available for Claude to auto-invoke without being named by the user.
 #
-# Everything NOT listed here is either in .claude/skill-library/ (tier 2, indexed
-# on demand by the `skill-library` skill) or deleted outright. Deletion is for
-# skills that teach general craft the model already has; archiving is for
-# specialist content that is real but rarely needed.
+# There is exactly ONE skill tree: .claude/skills/. Every skill is a real
+# directory there. Nothing is symlinked, nothing is copied, and nothing moves
+# between directories. There is no skill-library/ and no sync script; both were
+# removed once the two source trees they reconciled (.cursor/skills,
+# .hermes/skills) ceased to exist.
+#
+# This file decides listing cost, not existence. Everything NOT listed here is
+# set to "user-invocable-only" in .claude/settings.json under `skillOverrides`:
+# still installed, still reachable as /<name>, still readable by path — it just
+# does not spend roster budget at session start. The `skill-library` skill
+# explains how to search the tree on demand.
 #
 # THE BUDGET IS CHARACTERS, NOT ENTRIES.
 #
-# Claude Code concatenates every skill's name and description into the session
-# roster and truncates that string when it overflows — it does not drop whole
-# entries, it stops mid-word, and every entry after the cut arrives as a bare
-# slug. A skill whose description never reaches the model cannot be
+# Claude Code concatenates every rostered skill's name and description into the
+# session roster and truncates that string when it overflows — it does not drop
+# whole entries, it stops mid-word, and every entry after the cut arrives as a
+# bare slug. A skill whose description never reaches the model cannot be
 # auto-invoked, so it costs a line and buys nothing.
 #
 # This was measured, not guessed. With 81 entries totalling 26,629 chars the
-# roster truncated around position 73 of 81: `scrutinize` (505 ch),
-# `system-design` (700 ch) and six others arrived bare, while `tdd` at position
-# 78 survived purely because its description was 75 chars and still fit. That is
-# a greedy byte-fill hitting a ceiling, which sits somewhere near 21,000 chars.
+# roster truncated around position 73 of 81: `scrutinize` (505 ch) and
+# `system-design` (700 ch) arrived bare, while `tdd` at position 78 survived
+# purely because its description was 75 chars and still fit. That is a greedy
+# byte-fill hitting a ceiling, which sits somewhere near 21,000 chars.
 #
 # So "90 entries" was the wrong control variable — a roster of 90 short
 # descriptions fits comfortably while 81 long ones did not. Budget the sum of
 # description lengths and keep it under ~18,000 chars for margin.
 #
-# The bar for tier 1:
+# IDENTITY IS THE DIRECTORY NAME, not the frontmatter `name:`. 28 skills differ
+# between the two — `dev-caches-cleanup` declares `linux-dev-caches-cleanup`,
+# the `id-effect-*` family declares `id_effect-*`. Key this file and
+# `skillOverrides` on the directory name or the override silently fails to match
+# and the skill stays on the roster.
+#
+# The bar for a roster slot:
 #
 #   1. facts about THIS repo, machine or fleet that cannot be inferred
 #   2. version-specific API surface that is easy to misremember
@@ -35,11 +48,11 @@
 # What does NOT belong, at any description length: general software craft the
 # model performs natively. Commit conventions, rebasing, merge resolution, ADR
 # format, clean/hexagonal architecture, DDD theory, generic React guidance,
-# generic Playwright guidance, design taste. Those were deleted in full — the
+# generic Playwright guidance, design taste. Those were deleted outright — the
 # roster is for things the model cannot derive, not lessons it does not need.
 #
-#   bash .claude/bin/sync-skills.sh          apply
-#   bash .claude/bin/sync-skills.sh --check  verify
+# To promote a skill: add its directory name below AND delete its entry from
+# `skillOverrides` in settings.json. To demote: the reverse. Nothing moves.
 
 # --- workflow rails ---------------------------------------------------------
 id-workflow

@@ -253,10 +253,10 @@ rm -f "$gate_probe"
 rm -rf "$repo/.tmp/stop-gate"
 expect 0 "$(gate_exit '{}')" "no changed source files is a no-op"
 
-# Roster/library invariants are not tested here: sync-skills.sh is payload
-# maintenance, not an ID rail, and lives in .claude/bin/. Run
-# `bash .claude/bin/sync-skills.sh --check` for those — it exits non-zero on
-# drift, which is what this suite used to wrap.
+# Roster invariants are not tested here. There is no sync script any more: every
+# skill lives in .claude/skills/ and roster membership is a flag, set in
+# skills.manifest and mirrored by `skillOverrides` in settings.json. Keeping
+# those two files in agreement is payload maintenance, not an ID rail.
 
 echo
 echo "hooks.json — plugin wiring"

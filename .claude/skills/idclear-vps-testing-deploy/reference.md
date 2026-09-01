@@ -35,22 +35,35 @@ follow() {
 
 # Core
 code_only healthz "$HOST/healthz" "200"
-code_only api_health "https://api.testing.idclear.com/health" "200 404"
 
 # App surfaces (may redirect to Logto — 302/307 acceptable)
 follow home "$HOST/" "200 302 307"
 follow demo_volturapay "$HOST/demo/volturapay" "200 302 307"
 follow my_data "$HOST/my-data-and-documents" "200 302 307"
-follow auth_signin "$HOST/auth/sign-in" "200 302 307"
 
-# Static / Next assets (often 200 or 404 if route absent)
-code_only next_internal "$HOST/_next/static/" "200 404"
+# Auth surfaces. The route is /auth/login — there is no /auth/sign-in page.
+# The only sign-in artifact is the API route below.
+follow auth_login "$HOST/auth/login" "200 302 307"
+follow auth_register "$HOST/auth/register" "200 302 307"
+follow auth_welcome "$HOST/auth/welcome" "200 302 307"
+follow auth_logto_api "$HOST/api/auth/logto-sign-in" "200 302 307"
+
+# Static / Next assets. Bare path 404s; the trailing slash 308-redirects.
+code_only next_internal "$HOST/_next/static" "200 404"
 
 exit $fail
 '
 ```
 
 Adjust allowed codes if Logto or routing changes. For authenticated flows, use Playwright e2e against the deployed URL instead.
+
+### Checks deliberately not here
+
+| Check | Why it was removed |
+|-------|--------------------|
+| `https://api.testing.idclear.com/health` | No `api.` subdomain is configured in `docker-compose*.yml` or `apps/traefik/` for this host. It returns Cloudflare 522 (no origin) always — a permanent false failure, not a signal. |
+| `$HOST/auth/sign-in` | That page does not exist on `staging`. Real pages are `/auth/login`, `/auth/register`, `/auth/sign-up`, `/auth/welcome`. |
+| `$HOST/_next/static/` (trailing slash) | Returns 308, a trailing-slash redirect. The bare path is checked instead. |
 
 ## Service status
 
