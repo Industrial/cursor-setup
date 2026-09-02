@@ -25,7 +25,7 @@ harness/
 settings.json                      permissions, statusline, plugin declaration, skillOverrides
 mcp.json                           the four nix-backed MCP servers
 commands/                          /id and friends — real files, 16 of them
-skills/                            every skill, one tree, 229 of them
+skills/                            every skill, one tree, 230 of them
 skills.manifest                    which of them carry a description in the roster
 ```
 
@@ -142,7 +142,7 @@ hatches (`/quality`, `/skills`, `/agent`, `/debate`, `/plan-hierarchically`, `/p
 
 ## Skills
 
-Every skill is here as real content — 229 of them in **one tree**, `skills/`, vendored from four
+Every skill is here as real content — 230 of them in **one tree**, `skills/`, vendored from four
 sources. None are symlinks and none need `.cursor/` or `.hermes/` to be present.
 
 Nothing moves. There is no `skill-library/` directory and no sync script. Both existed to

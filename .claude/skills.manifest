@@ -64,6 +64,7 @@ activate-tooling
 maestro
 new-skill
 skill-library
+ticket-to-pr
 pre-push-ci
 improve-test-coverage
 definitively-programs
