@@ -94,6 +94,8 @@ fleet-rust-tooling
 
 # --- trading and research ---------------------------------------------------
 andromeda-development
+andromeda-autoresearch
+andromeda-dream
 
 # --- typescript, effect, web ------------------------------------------------
 effect.ts-fundamentals
